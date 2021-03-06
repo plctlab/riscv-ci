@@ -12,25 +12,39 @@ pipeline {
 			}
 		}
 
-		stage('linux-rv64imafdc-lp64-medany on Ubuntu 20.04') {
+		stage('build on Ubuntu 20.04') {
 			steps {
 				dir ("riscv-gnu-toolchain/regression") {
-				sh 'make build-linux-rv64imafdc-lp64-medany'
-				sh 'make check-linux-rv64imafdc-lp64-medany'
-				sh 'make report-linux-rv64imafdc-lp64-medany'
-				sh 'make check-binutils--linux-rv64imafdc-lp64-medany'
-				sh 'make report-binutils-linux-rv64imafdc-lp64-medany'
+					sh 'make build'
 				}
 			}
 		}
-		stage('linux-rv64imafdc-lp64d-medany on Ubuntu 20.04') {
+		stage('check on Ubuntu 20.04') {
 			steps {
 				dir ("riscv-gnu-toolchain/regression") {
-				sh 'make build-linux-rv64imafdc-lp64d-medany'
-				sh 'make check-linux-rv64imafdc-lp64d-medany'
-				sh 'make report-linux-rv64imafdc-lp64d-medany'
-				sh 'make check-binutils--linux-rv64imafdc-lp64d-medany'
-				sh 'make report-binutils-linux-rv64imafdc-lp64d-medany'
+					sh 'make check'
+					sh 'make check-binutils'
+				}
+			}
+		}
+		stage('report on Ubuntu 20.04') {
+			steps {
+				dir ("riscv-gnu-toolchain/regression") {
+					sh 'make report'
+				}
+			}
+		}
+		stage('check on Ubuntu 20.04') {
+			steps {
+				dir ("riscv-gnu-toolchain/regression") {
+					sh 'make check-binutils'
+				}
+			}
+		}
+		stage('report on Ubuntu 20.04') {
+			steps {
+				dir ("riscv-gnu-toolchain/regression") {
+					sh 'make report-binutils'
 				}
 			}
 		}
