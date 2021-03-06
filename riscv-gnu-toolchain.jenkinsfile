@@ -6,6 +6,7 @@ pipeline {
 	stages {
 
 		stage('linux-rv64imafdc-lp64-medany on Ubuntu 20.04') {
+		steps {
 			stage('Build') {
 				steps {
 					sh 'cd regression && make build-linux-rv64imafdc-lp64-medany'
@@ -32,7 +33,9 @@ pipeline {
 				}
 			}
 		}
+		}
 		stage('linux-rv64imafdc-lp64d-medany on Ubuntu 20.04') {
+		steps {
 			stage('Build') {
 				steps {
 					sh 'cd regression && make build-linux-rv64imafdc-lp64d-medany'
@@ -58,6 +61,7 @@ pipeline {
 					sh 'cd regression && make report-binutils-linux-rv64imafdc-lp64d-medany'
 				}
 			}
+		}
 		}
 
 	}
