@@ -6,62 +6,22 @@ pipeline {
 	stages {
 
 		stage('linux-rv64imafdc-lp64-medany on Ubuntu 20.04') {
-		steps {
-			stage('Build') {
-				steps {
-					sh 'cd regression && make build-linux-rv64imafdc-lp64-medany'
-				}
+			steps {
+				sh 'cd regression && make build-linux-rv64imafdc-lp64-medany'
+				sh 'cd regression && make check-linux-rv64imafdc-lp64-medany'
+				sh 'cd regression && make report-linux-rv64imafdc-lp64-medany'
+				sh 'cd regression && make check-binutils--linux-rv64imafdc-lp64-medany'
+				sh 'cd regression && make report-binutils-linux-rv64imafdc-lp64-medany'
 			}
-			stage('Check-gcc') {
-				steps {
-					sh 'cd regression && make check-linux-rv64imafdc-lp64-medany'
-				}
-			}
-			stage('report-gcc') {
-				steps {
-					sh 'cd regression && make report-linux-rv64imafdc-lp64-medany'
-				}
-			}
-			stage('check-binutils') {
-				steps {
-					sh 'cd regression && make check-binutils--linux-rv64imafdc-lp64-medany'
-				}
-			}
-			stage('report-binutils') {
-				steps {
-					sh 'cd regression && make report-binutils-linux-rv64imafdc-lp64-medany'
-				}
-			}
-		}
 		}
 		stage('linux-rv64imafdc-lp64d-medany on Ubuntu 20.04') {
-		steps {
-			stage('Build') {
-				steps {
-					sh 'cd regression && make build-linux-rv64imafdc-lp64d-medany'
-				}
+			steps {
+				sh 'cd regression && make build-linux-rv64imafdc-lp64d-medany'
+				sh 'cd regression && make check-linux-rv64imafdc-lp64d-medany'
+				sh 'cd regression && make report-linux-rv64imafdc-lp64d-medany'
+				sh 'cd regression && make check-binutils--linux-rv64imafdc-lp64d-medany'
+				sh 'cd regression && make report-binutils-linux-rv64imafdc-lp64d-medany'
 			}
-			stage('Check-gcc') {
-				steps {
-					sh 'cd regression && make check-linux-rv64imafdc-lp64d-medany'
-				}
-			}
-			stage('report-gcc') {
-				steps {
-					sh 'cd regression && make report-linux-rv64imafdc-lp64d-medany'
-				}
-			}
-			stage('check-binutils') {
-				steps {
-					sh 'cd regression && make check-binutils--linux-rv64imafdc-lp64d-medany'
-				}
-			}
-			stage('report-binutils') {
-				steps {
-					sh 'cd regression && make report-binutils-linux-rv64imafdc-lp64d-medany'
-				}
-			}
-		}
 		}
 
 	}
