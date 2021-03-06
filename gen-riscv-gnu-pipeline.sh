@@ -3,12 +3,12 @@
 set -e
 
 echo "pipeline {"
-echo "  stages {"
 for OS in ubuntu2004; do
 	# TODO: enable ubuntu 18.04 and CentOS. move agent to stage.
 	echo "  agent {"
 	echo "    label '$OS'"
 	echo "  }"
+	echo "  stages {"
 
 	echo "    stage('Get the source') {"
 	echo "      steps {"

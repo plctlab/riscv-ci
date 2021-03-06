@@ -1,8 +1,8 @@
 pipeline {
-  stages {
   agent {
     label 'ubuntu2004'
   }
+  stages {
     stage('Get the source') {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
