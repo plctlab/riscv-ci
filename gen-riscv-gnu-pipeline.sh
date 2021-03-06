@@ -13,8 +13,9 @@ for OS in ubuntu2004; do
 	echo "    stage('Get the source') {"
 	echo "      steps {"
 	echo "        sh 'rm -rf riscv-gnu-toolchain'"
-	echo "        sh 'git clone --shallow https://github.com/riscv/riscv-gnu-toolchain'"
-	echo "        sh 'cd riscv-gnu-toolchain && git config -f .gitmodules submodule.*.shallow true &&  git submodule update --init'"
+	echo "        sh 'git clone --shallow-since=2021-03-01 --shallow-submodules https://github.com/riscv/riscv-gnu-toolchain'"
+	echo "        sh 'cd riscv-gnu-toolchain && git submodule update --init'"
+	#echo "        sh 'cd riscv-gnu-toolchain && git config -f .gitmodules submodule.*.shallow true &&  git submodule update --init'"
 	echo "      }"
 	echo "    }"
 
