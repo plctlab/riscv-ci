@@ -34,14 +34,14 @@ pipeline {
 				}
 			}
 		}
-		stage('check on Ubuntu 20.04') {
+		stage('check-binutls on Ubuntu 20.04') {
 			steps {
 				dir ("riscv-gnu-toolchain/regression") {
 					sh 'make check-binutils'
 				}
 			}
 		}
-		stage('report on Ubuntu 20.04') {
+		stage('report-binutils on Ubuntu 20.04') {
 			steps {
 				dir ("riscv-gnu-toolchain/regression") {
 					sh 'make report-binutils'
