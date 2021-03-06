@@ -4,6 +4,13 @@ pipeline {
 	}
 
 	stages {
+		stage('Get the source') {
+			steps {
+				sh 'rm -rf riscv-gnu-toolchain'
+				sh 'git clone https://github.com/riscv/riscv-gnu-toolchain'
+				sh 'cd riscv-gnu-toolchain'
+			}
+		}
 
 		stage('linux-rv64imafdc-lp64-medany on Ubuntu 20.04') {
 			steps {
