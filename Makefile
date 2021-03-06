@@ -1,4 +1,5 @@
 .PHONY: gen
 
 gen:
-	./gen-riscv-gnu-pipeline.sh > riscv-gnu-detailed-pipeline.jenkinsfile
+	OSTYPE=ubuntu2004 ./gen-riscv-gnu-pipeline.sh > riscv-gnu-detailed-pipeline-ubuntu2004.jenkinsfile
+	OSTYPE=ubuntu1804 ./gen-riscv-gnu-pipeline.sh > riscv-gnu-detailed-pipeline-ubuntu1804.jenkinsfile
