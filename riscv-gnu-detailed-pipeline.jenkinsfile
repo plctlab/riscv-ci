@@ -7,6 +7,7 @@ pipeline {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
         sh 'git clone https://github.com/riscv/riscv-gnu-toolchain'
+        sh 'cd riscv-gnu-toolchain && git submodule update --init'
       }
     }
     stage('build newlib-rv32i-ilp32-medlow on ubuntu2004') {

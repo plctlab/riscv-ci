@@ -14,6 +14,7 @@ for OS in ubuntu2004; do
 	echo "      steps {"
 	echo "        sh 'rm -rf riscv-gnu-toolchain'"
 	echo "        sh 'git clone https://github.com/riscv/riscv-gnu-toolchain'"
+	echo "        sh 'cd riscv-gnu-toolchain && git submodule update --init'"
 	echo "      }"
 	echo "    }"
 
