@@ -7,7 +7,7 @@ pipeline {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
         sh 'git clone --shallow-since=2021-03-01 --shallow-submodules https://github.com/riscv/riscv-gnu-toolchain'
-        sh 'cd riscv-gnu-toolchain && git checkout rvv-intrinsic'
+        sh 'cd riscv-gnu-toolchain && git checkout origin/rvv-intrinsic'
         sh 'cd riscv-gnu-toolchain && git config -f .gitmodules submodule.*.shallow true &&  git submodule update --init'
       }
     }
