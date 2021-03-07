@@ -1,0 +1,728 @@
+pipeline {
+  agent {
+    label 'ubuntu1804'
+  }
+  stages {
+    stage('Get the source') {
+      steps {
+        sh 'rm -rf riscv-gnu-toolchain'
+        sh 'git clone --shallow-since=2021-03-01 --shallow-submodules https://github.com/riscv/riscv-gnu-toolchain'
+        sh 'cd riscv-gnu-toolchain && git config -f .gitmodules submodule.*.shallow true &&  git submodule update --init'
+      }
+    }
+    stage('Bump submodues') {
+      steps {
+        dir ('riscv-gnu-toolchain') {
+          sh 'cd riscv-binutils && git pull'
+          sh 'cd riscv-gcc && git pull'
+          sh 'cd riscv-glibc && git pull'
+          sh 'cd riscv-dejagnu && git pull'
+          sh 'cd riscv-newlib && git pull'
+          sh 'cd riscv-gdb && git pull'
+    }
+      }
+    }
+    stage('build newlib-rv32i-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32i-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32i-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32i-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32i-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32i-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32im-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32im-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32im-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32im-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32im-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32im-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32iac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32iac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32iac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32iac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32iac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32iac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32imafc-ilp32f-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32imafc-ilp32f-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32imafc-ilp32f-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32imafc-ilp32f-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32imafc-ilp32f-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32imafc-ilp32f-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imac-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imac-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imafdc-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imafdc-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imafdc-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imafdc-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imafdc-ilp32-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imafdc-ilp32-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imafdc-ilp32d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imafdc-ilp32d-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imafdc-ilp32d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imafdc-ilp32d-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imafdc-ilp32d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imafdc-ilp32d-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imac-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imac-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imafdc-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imafdc-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imafdc-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imafdc-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imafdc-lp64-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imafdc-lp64-medlow'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imafdc-lp64d-medlow on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imafdc-lp64d-medlow'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32i-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32i-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32i-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32i-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32i-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32i-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32im-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32im-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32im-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32im-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32im-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32im-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32iac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32iac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32iac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32iac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32iac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32iac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv32imafc-ilp32f-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv32imafc-ilp32f-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv32imafc-ilp32f-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv32imafc-ilp32f-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv32imafc-ilp32f-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv32imafc-ilp32f-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('build newlib-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-newlib-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils newlib-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-newlib-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc newlib-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-newlib-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imac-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imac-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imafdc-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imafdc-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imafdc-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imafdc-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imafdc-ilp32-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imafdc-ilp32-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv32imafdc-ilp32d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv32imafdc-ilp32d-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv32imafdc-ilp32d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv32imafdc-ilp32d-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv32imafdc-ilp32d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv32imafdc-ilp32d-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imac-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imac-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imafdc-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imafdc-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imafdc-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imafdc-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imafdc-lp64-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imafdc-lp64-medany'
+          }
+        }
+      }
+    }
+    stage('build linux-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) stamps/build-linux-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+    stage('report binutils linux-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-binutils-linux-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+    stage('report gcc linux-rv64imafdc-lp64d-medany on ubuntu1804') {
+      steps {
+        dir ('riscv-gnu-toolchain/regression') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'make -j $(nproc) report-gcc-linux-rv64imafdc-lp64d-medany'
+          }
+        }
+      }
+    }
+  }
+}
