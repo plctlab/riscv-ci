@@ -6,9 +6,7 @@ pipeline {
     stage('Get the source') {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
-        sh 'git clone --shallow-since=2021-03-01 --shallow-submodules https://github.com/riscv/riscv-gnu-toolchain'
-        sh 'cd riscv-gnu-toolchain && git checkout origin/sync-after-git-clone'
-        sh 'cd riscv-gnu-toolchain && git config -f .gitmodules submodule.*.shallow true &&  git submodule update --init'
+        sh 'git clone --shallow-submodules --recursive  https://github.com/riscv/riscv-gnu-toolchain -b sync-after-git-clone || true'
       }
     }
     stage('build newlib-rv32i-ilp32-medlow on ubuntu1804') {
