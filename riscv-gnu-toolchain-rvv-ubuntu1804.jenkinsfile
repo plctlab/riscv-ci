@@ -6,8 +6,27 @@ pipeline {
     stage('Get the source') {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
-        sh 'git clone --shallow-submodules https://github.com/riscv/riscv-gnu-toolchain -b rvv-intrinsic'
+        sh 'git clone https://github.com/riscv/riscv-gnu-toolchain -b rvv-intrinsic'
         sh 'cd riscv-gnu-toolchain && git submodule update --init'
+        sh 'cd riscv-gnu-toolchain/riscv-gcc && git checkout -f riscv-gcc-10.1-rvv-dev && git status'
+      }
+    }
+    stage('make newlib') {
+      steps {
+        dir ('riscv-gnu-toolchain') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              sh 'configure --prefix=$PWD/build-rv64-newlib && make -j $(nproc) check'
+          }
+        }
+      }
+    }
+    stage('make linux') {
+      steps {
+        dir ('riscv-gnu-toolchain') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+               sh 'configure --prefix=$PWD/build-rv64-linux & make -j $(nproc) check-linux'
+          }
+        }
       }
     }
     stage('build newlib-rv32i-ilp32-medlow on ubuntu1804') {
