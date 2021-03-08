@@ -15,7 +15,7 @@ pipeline {
       steps {
         dir ('riscv-gnu-toolchain') {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-              sh 'configure --prefix=$PWD/build-rv64-newlib && make -j $(nproc) check'
+              sh './configure --prefix=$PWD/build-rv64-newlib && make -j $(nproc) report'
           }
         }
       }
@@ -24,7 +24,16 @@ pipeline {
       steps {
         dir ('riscv-gnu-toolchain') {
           catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-               sh 'configure --prefix=$PWD/build-rv64-linux & make -j $(nproc) check-linux'
+               sh './configure --prefix=$PWD/build-rv64-linux & make -j $(nproc) report-linux'
+          }
+        }
+      }
+    }
+    stage('make linux multilib') {
+      steps {
+        dir ('riscv-gnu-toolchain') {
+          catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+               sh './configure --enable-multilib --prefix=$PWD/build-rv64-linux & make -j $(nproc) report-linux'
           }
         }
       }
