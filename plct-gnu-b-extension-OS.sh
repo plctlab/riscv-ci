@@ -8,11 +8,11 @@ git submodule update --init
 cd riscv-gcc
 git remote add jw https://github.com/pz9115/riscv-gcc.git
 git fetch jw
-git checkout jw riscv-gcc-10.2.0-rvb
+git checkout jw/riscv-gcc-10.2.0-rvb
 cd ../riscv-binutils
 git remote add jw https://github.com/pz9115/riscv-binutils-gdb.git
 git fetch jw
-git checkout jw riscv-binutils-experiment
+git checkout jw/riscv-binutils-experiment
 
 # test:
 cd ..
