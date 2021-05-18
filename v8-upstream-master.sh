@@ -39,10 +39,7 @@ run_sim_test () {
     shift
   done
 
-  for t in cctest unittests wasm-api-tests wasm-js mjsunit intl message debugger inspector wasm-spec-tests fuzzer
-  do
-    ./tools/run-tests.py $ARGS $t # 2>&1 | tee "$LOG_FILE.simbuild.$BTYPE.${t}${SUFFIX}"
-  done
+  ./tools/run-tests.py $ARGS # 2>&1 | tee "$LOG_FILE.simbuild.$BTYPE.${t}${SUFFIX}"
 }
 
 run_all_sim_build_checks () {
