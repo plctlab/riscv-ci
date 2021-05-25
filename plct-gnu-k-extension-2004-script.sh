@@ -15,12 +15,11 @@ cd ..
 ./configure --prefix="$PWD/rv64gck_zks" --with-arch=rv64gck_zks --with-abi=lp64d --with-multilib-generator="rv64gck_zks-lp64d--"
 
 # you can use make -j* to make speed up
-# Remove GCC test due to b-ext is not support completely, we will restart it after B-ext GCC part finish by Sifive
 make report-gcc -j $(nproc)
 make report-binutils -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/rv32gck_zks" --with-arch=rv32gck_zks --with-abi=ilp32d --with-multilib-generator="rv64gck_zks-ilp32d--"
+./configure --prefix="$PWD/rv32gck_zks" --with-arch=rv32gck_zks --with-abi=ilp32d --with-multilib-generator="rv32gck_zks-ilp32d--"
 make clean 
 make report-gcc -j $(nproc)
 make report-binutils-newlib -j $(nproc)
