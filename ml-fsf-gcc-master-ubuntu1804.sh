@@ -5,7 +5,15 @@ if [ ! -e riscv-gnu-toolchain ]; then
 fi
 
 cd riscv-gnu-toolchain
-git submodule update --init
+git clean -fdx
+git stash
+
+cd riscv-gcc
+git clean -fdx
+git stash
+cd ..
+
+git submodule update -f --init
 
 cd riscv-gcc
 git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
