@@ -5,7 +5,7 @@ if [ ! -e riscv-gnu-toolchain ]; then
 fi
 
 cd riscv-gnu-toolchain
-git submodule update --init
+git submodule update --init || true #FIXME: Ignore QEMU clone error temporary
 
 cd riscv-gcc
 git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
