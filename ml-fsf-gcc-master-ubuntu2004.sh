@@ -11,10 +11,9 @@ cd riscv-gcc
 git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
 git fetch fsf
 
-git clean -fdx
 git reset --hard
-git branch -D "patch-${patch_id}" || true
-git checkout -b "patch-${patch_id}" fsf/master
+git clean -fdx
+git checkout -b "patch-${patch_id}-${BUILD_ID}" fsf/master
 
 pwclient apply -p gcc "${patch_id}"
 # pwclient git-am -p gcc "${patch_id}"
@@ -24,9 +23,9 @@ cd ..
 # RV64 Tests
 rm -rf "$PWD/opt-riscv64"
 ./configure --prefix="$PWD/opt-riscv64/" \
-	--with-arch=rv64gcb \
+	--with-arch=rv64gc \
 	--with-abi=lp64d \
-	--with-mulitilib-generator="rv64gcb-lp64d--"
+	--with-mulitilib-generator="rv64gc-lp64d--"
 make clean
 make report-binutils-newlib -j $(nproc)
 make report-gcc-newlib -j $(nproc)
@@ -34,9 +33,9 @@ make report-gcc-newlib -j $(nproc)
 # test rv32:
 rm -rf "$PWD/opt-riscv32"
 ./configure --prefix="$PWD/opt-riscv32/" \
-	--with-arch=rv32gcb \
+	--with-arch=rv32gc \
 	--with-abi=ilp32d \
-	--with-mulitilib-generator="rv32gcb-ilp32d--"
+	--with-mulitilib-generator="rv32gc-ilp32d--"
 make clean
 make report-binutils-newlib -j $(nproc)
 make report-gcc-newlib -j $(nproc)
