@@ -1,5 +1,8 @@
 #!/bin/bash
 
+git config --global user.name  "Jenkins $HOSTNAME"
+git config --global user.email "plct-oss@iscas.ac.cn"
+
 if [ ! -e riscv-gnu-toolchain ]; then
 	git clone https://github.com/riscv/riscv-gnu-toolchain 
 fi
