@@ -6,7 +6,7 @@ FREQ=3600
 BATCH_SIZE=100
 
 # JOB URL
-JOB_URL="https://ci.rvperf.org/job/ml-fsf-gcc-master-ubuntu2004/build?token=${CI_JOB_TOKEN}"
+JOB_URL="https://ci.rvperf.org/job/ml-fsf-gcc-master-ubuntu2004/build"
 
 # Pleasee make sure your $HOME/.pwclientrc has this config:
 
@@ -29,8 +29,7 @@ check_pwclient () {
 }
 
 function trigger_ci () {
-	ID="$1"
-	curl "$JOB_URL"
+	curl "$JOB_URL?token=${CI_JOB_TOKEN}&patch_id=$1"
 }
 
 function fetch_and_trigger () {
