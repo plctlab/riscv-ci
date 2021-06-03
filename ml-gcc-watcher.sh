@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Usage:
+#    CI_JOB_TOKEN=secret $0
+
 # watch the list in every 1 hour
 FREQ=3600
 # how many items in the list
 BATCH_SIZE=100
 
 # JOB URL
-JOB_URL="https://ci.rvperf.org/job/ml-fsf-gcc-master-ubuntu2004/build"
+JOB_URL="https://ci.rvperf.org/job/ml-fsf-gcc-master-ubuntu1804/buildWithParameters"
 
 # Pleasee make sure your $HOME/.pwclientrc has this config:
 
