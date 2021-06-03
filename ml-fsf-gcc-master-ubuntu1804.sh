@@ -11,11 +11,9 @@ cd riscv-gcc
 git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
 git fetch fsf
 
-git clean -fdx
 git reset --hard
-git checkout master fsf/master
-git branch -D "patch-${patch_id}" || true
-git checkout -b "patch-${patch_id}" fsf/master
+git clean -fdx
+git checkout -b "patch-${patch_id}-${BUILD_ID}" fsf/master
 
 pwclient apply -p gcc "${patch_id}"
 # pwclient git-am -p gcc "${patch_id}"
