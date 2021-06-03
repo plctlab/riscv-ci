@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -e riscv-gnu-toolchain ]; then
+if [ ! -e riscv-gnu-toolchain ]; then
 	git clone https://github.com/riscv/riscv-gnu-toolchain 
 fi
 
