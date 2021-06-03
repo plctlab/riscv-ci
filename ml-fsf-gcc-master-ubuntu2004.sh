@@ -12,7 +12,7 @@ git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
 git fetch fsf
 git checkout -b "patch-${patch_id}" fsf/master
 
-pwclient git-am -p gcc -s -m "${patch_id}"
+pwclient git-am -p gcc "${patch_id}"
 
 cd ..
 
