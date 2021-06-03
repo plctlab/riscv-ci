@@ -5,7 +5,8 @@ if [ ! -e riscv-gnu-toolchain ]; then
 fi
 
 cd riscv-gnu-toolchain
-git submodule update --init || true #FIXME: Ignore QEMU clone error temporary
+# FIXME CA failure for QEMU submodule. work around.
+GIT_SSL_NO_VERIFY=1 git submodule update --init
 
 cd riscv-gcc
 git remote | grep -q fsf || git remote add fsf git://gcc.gnu.org/git/gcc.git
