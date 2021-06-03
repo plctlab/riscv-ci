@@ -22,7 +22,8 @@ pwclient apply -p gcc "${patch_id}"
 cd ..
 
 # RV64 Tests
-./configure --prefix="$PWD/opt-riscv/" \
+rm -rf "$PWD/opt-riscv64"
+./configure --prefix="$PWD/opt-riscv64/" \
 	--with-arch=rv64gcb \
 	--with-abi=lp64d \
 	--with-mulitilib-generator="rv64gcb-lp64d--"
@@ -31,7 +32,8 @@ make report-binutils-newlib -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/opt-riscv/" \
+rm -rf "$PWD/opt-riscv32"
+./configure --prefix="$PWD/opt-riscv32/" \
 	--with-arch=rv32gcb \
 	--with-abi=ilp32d \
 	--with-mulitilib-generator="rv32gcb-ilp32d--"
