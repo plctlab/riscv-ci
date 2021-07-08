@@ -12,7 +12,7 @@ git checkout jw/riscv-binutils-experiment
 
 # test:
 cd ..
-./configure --prefix="$PWD/opt-riscv/" --with-arch=rv64gczbazbbzbczbezbfzbpzbrzbszbt --with-abi=lp64d --with-mulitilib-generator="rv64gczbazbbzbczbezbfzbpzbrzbszbt-lp64d--"
+./configure --prefix="$PWD/opt-riscv/" --with-arch=rv64gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt --with-abi=lp64d --with-mulitilib-generator="rv64gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt-lp64d--"
 
 # you can use make -j* to make speed up
 # Remove GCC test due to b-ext is not support completely, we will restart it after B-ext GCC part finish by Sifive
@@ -20,6 +20,6 @@ cd ..
 make report-binutils-newlib -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/opt-riscv/" --with-arch=rv32gczbazbbzbczbezbfzbpzbrzbszbt --with-abi=ilp32d --with-mulitilib-generator="rv32gczbazbbzbczbezbfzbpzbrzbszbt-ilp32d--"
+./configure --prefix="$PWD/opt-riscv/" --with-arch=rv32gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt --with-abi=ilp32d --with-mulitilib-generator="rv32gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt-ilp32d--"
 make clean 
 make report-binutils-newlib -j $(nproc)

@@ -12,14 +12,15 @@ git checkout k/riscv-binutils-2.36-k-ext
 cd ..
 
 # test:
-./configure --prefix="$PWD/rv64gck_zks" --with-arch=rv64gck_zks --with-abi=lp64d --with-multilib-generator="rv64gck_zks-lp64d--"
+./configure --prefix="$PWD/rv64k" --with-arch=rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt --with-abi=lp64d --with-multilib-generator="rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt-lp64d--"
 
 # you can use make -j* to make speed up
 make report-gcc -j $(nproc)
 make report-binutils -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/rv32gck_zks" --with-arch=rv32gck_zks --with-abi=ilp32d --with-multilib-generator="rv32gck_zks-ilp32d--"
+./configure --prefix="$PWD/rv32k" --with-arch=rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt --with-abi=ilp32d --with-multilib-generator="rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt-ilp32d--"
+
 make clean 
 make report-gcc -j $(nproc)
 make report-binutils-newlib -j $(nproc)
