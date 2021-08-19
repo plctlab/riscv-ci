@@ -19,6 +19,7 @@ bash $REPO_HOME/tools/spike-conf.sh
 bash $REPO_HOME/tools/toolchain-build.sh
 bash $REPO_HOME/tools/spike-build.sh
 
+bash $REPO_HOME/tools/binutils-revert.sh
 cd ..
 
 #download riscv-arch-test
@@ -41,3 +42,5 @@ make RISCV_TARGET=spike RISCV_DEVICE=K_unratified TARGET_SIM=$PWD/../riscv-crypt
 
 make RISCV_TARGET=spike RISCV_DEVICE=K_unratified TARGET_SIM=$PWD/../riscv-crypto/build/riscv64-unknown-elf/bin/spike RISCV_PREFIX=$PWD/../riscv-crypto/build/riscv64-unknown-elf/bin/riscv64-unknown-elf- compile simulate verify XLEN=64
 
+rm riscv-target/spike/* -r
+git checkout riscv-target/spike
