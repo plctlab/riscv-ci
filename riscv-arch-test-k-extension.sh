@@ -5,11 +5,11 @@ export RISCV_ARCH=riscv64-unknown-elf
 source bin/conf.sh
 source $REPO_HOME/tools/share.sh
 
+sed -i "s|git submodule update --init --recursive extern/riscv-isa-sim||" $REPO_HOME/tools/clone.sh
 bash $REPO_HOME/tools/clone.sh
-cd extern/riscv-isa-sim
-git checkout master
-git pull
-cd ../../
+cd extern/
+git clone https://github.com/riscv/riscv-isa-sim.git
+cd $REPO_HOME
 
 bash $REPO_HOME/tools/binutils-apply.sh
 
@@ -20,6 +20,8 @@ bash $REPO_HOME/tools/toolchain-build.sh
 bash $REPO_HOME/tools/spike-build.sh
 
 bash $REPO_HOME/tools/binutils-revert.sh
+rm -r extern/riscv-isa-sim
+git checkout $REPO_HOME/tools/clone.sh
 cd ..
 
 #download riscv-arch-test
