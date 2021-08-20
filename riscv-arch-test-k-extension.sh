@@ -20,7 +20,6 @@ bash $REPO_HOME/tools/toolchain-build.sh
 bash $REPO_HOME/tools/spike-build.sh
 
 bash $REPO_HOME/tools/binutils-revert.sh
-rm -r extern/riscv-isa-sim
 git checkout $REPO_HOME/tools/clone.sh
 cd ..
 
@@ -46,3 +45,4 @@ make RISCV_TARGET=spike RISCV_DEVICE=K_unratified TARGET_SIM=$PWD/../riscv-crypt
 
 rm riscv-target/spike/* -r
 git checkout riscv-target/spike
+rm -r $REPO_HOME/extern/riscv-isa-sim
