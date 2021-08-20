@@ -8,7 +8,7 @@ git checkout jw/riscv-gcc-10.2.0-rvb
 cd ../riscv-binutils
 git remote add jw https://github.com/pz9115/riscv-binutils-gdb.git
 git fetch jw
-git checkout jw/riscv-binutils-experiment
+git checkout jw/riscv-binutils-b-ext
 
 # test rv64:
 cd ..
