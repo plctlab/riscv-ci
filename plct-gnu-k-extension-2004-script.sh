@@ -18,7 +18,7 @@ cd ..
 make report-binutils-newlib -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/rv32k" --with-arch=rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt --with-abi=ilp32d --with-multilib-generator="rv64gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt-ilp32d--"
+./configure --prefix="$PWD/rv32k" --with-arch=rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt --with-abi=ilp32d --with-multilib-generator="rv32gc_zbkb_zbkc_zbkx_zknd_zkne_zknh_zkr_zksed_zksh_zkt-ilp32d--"
 
 make clean
 make report-binutils-newlib -j $(nproc)
