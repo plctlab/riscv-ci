@@ -82,6 +82,16 @@ cd "$V8_ROOT/v8"
 git log -1
 
 #run_x86_build_checks
+# note: 2021-08-21 run 10 times for ramdom bug
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
+run_all_sim_build_checks
 run_all_sim_build_checks
 # build_cross_builds
 # run_on_qemu
