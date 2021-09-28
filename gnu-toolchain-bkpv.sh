@@ -4,7 +4,7 @@ git submodule update --init
 cd riscv-gcc
 git remote add pz9115 https://github.com/pz9115/riscv-gcc.git
 git fetch pz9115
-git checkout pz9115/https://github.com/pz9115/riscv-gcc.git
+git checkout pz9115/riscv-gcc-experimental-v
 cd ../riscv-binutils
 git remote add pz9115 https://github.com/pz9115/riscv-binutils-gdb.git
 git fetch pz9115
