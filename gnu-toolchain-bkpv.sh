@@ -21,7 +21,7 @@ cd ..
 make -j $(nproc)
 
 # test rv64
-sed '15c qemu-riscv$xlen -cpu rv64,x-b=true,x-k=true,x-p=true,x-v=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv64,x-b=true,x-k=true,x-p=true,x-v=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
@@ -31,6 +31,6 @@ make clean
 make -j $(nproc)
 
 #test rv32
-sed '15c qemu-riscv$xlen -cpu rv32,x-b=true,x-k=true,x-p=true,x-v=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv32,x-b=true,x-k=true,x-p=true,x-v=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
