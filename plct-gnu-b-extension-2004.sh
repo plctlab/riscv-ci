@@ -1,4 +1,4 @@
-git clone https://github.com/riscv/riscv-gnu-toolchain 
+git clone https://github.com/pz9115/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init
 cd riscv-gcc
