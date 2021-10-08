@@ -4,7 +4,7 @@
 [ -z `git config user.email` ] && git config --global user.email "plct-oss@iscas.ac.cn"
 
 if [ ! -e riscv-gnu-toolchain ]; then
-	git clone https://github.com/riscv/riscv-gnu-toolchain 
+	git clone https://github.com/pz9115/riscv-gnu-toolchain.git 
 fi
 
 cd riscv-gnu-toolchain

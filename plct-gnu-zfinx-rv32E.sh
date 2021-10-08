@@ -26,7 +26,7 @@ cd ..
 
 
 # for rv32e:
-./configure --prefix=$PWD/opt-rv32e/ --with-arch=rv32ec --with-abi=ilp32e --with-multilib-generator="rv32ec-ilp32e--"
+./configure --prefix=$PWD/opt-rv32e/ --with-arch=rv32emac --with-abi=ilp32e --with-multilib-generator="rv32emac-ilp32e--"
 
 # you can use make -j* to make speed up
 make -j $(nproc) report-gcc-newlib
