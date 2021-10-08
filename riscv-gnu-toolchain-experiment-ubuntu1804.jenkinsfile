@@ -6,7 +6,7 @@ pipeline {
     stage('Get the source') {
       steps {
         sh 'rm -rf riscv-gnu-toolchain'
-        sh 'git clone https://github.com/riscv/riscv-gnu-toolchain -b master'
+        sh 'git clone https://github.com/pz9115/riscv-gnu-toolchain.git -b master'
         sh 'cd riscv-gnu-toolchain && git submodule update --init'
         sh 'cd riscv-gnu-toolchain/riscv-binutils && git checkout -f riscv-binutils-experiment'
       }
