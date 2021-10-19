@@ -30,11 +30,11 @@ cd riscv-arch-test
 cp -r ../riscv-crypto/extern/riscv-isa-sim/arch_test_target/spike/* riscv-target/spike/
 cd riscv-target/spike/device/rv64i_m
 cp -r M K_unratified
-sed -i "s|rv64im|rv64ikb|" K_unratified/Makefile.include
+sed -i "s|rv64im|rv64imac_zks_zkn_xbitmanip|" K_unratified/Makefile.include
 
 cd ../rv32i_m
 cp -r M K_unratified
-sed -i "s|rv32im|rv32ikb|" K_unratified/Makefile.include
+sed -i "s|rv32im|rv32imac_zks_zkn_xbitmanip|" K_unratified/Makefile.include
 
 cd ../../../../
 
