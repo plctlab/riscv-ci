@@ -16,7 +16,7 @@ git checkout plctlab/new-machine-dev
 
 # test:
 cd ..
-./configure --prefix="$PWD/opt-riscv/" --with-arch=rv64gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt --with-abi=lp64d --with-mulitilib-generator="rv64gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt-lp64d--"
+./configure --prefix="$PWD/opt-riscv/" --with-arch=rv64gc_zba_zbb_zbc_zbe_zbf_zbm_zbp_zbr_zbs_zbt --with-abi=lp64d --with-mulitilib-generator="rv64gc_zba_zbb_zbc_zbe_zbf_zbm_zbp_zbr_zbs_zbt-lp64d--"
 
 # you can use make -j* to make speed up
 sed -i '15c qemu-riscv$xlen -cpu rv64,x-b=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
@@ -24,7 +24,7 @@ make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 # test rv32:
-./configure --prefix="$PWD/opt-riscv/" --with-arch=rv32gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt --with-abi=ilp32d --with-mulitilib-generator="rv32gc_zba_zbb_zbc_zbe_zbf_zbp_zbr_zbs_zbt-ilp32d--"
+./configure --prefix="$PWD/opt-riscv/" --with-arch=rv32gc_zba_zbb_zbc_zbe_zbf_zbm_zbp_zbr_zbs_zbt --with-abi=ilp32d --with-mulitilib-generator="rv32gc_zba_zbb_zbc_zbe_zbf_zbm_zbp_zbr_zbs_zbt-ilp32d--"
 make clean 
 sed -i '15c qemu-riscv$xlen -cpu rv32,x-b=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run
 make report-gcc-newlib -j $(nproc)
