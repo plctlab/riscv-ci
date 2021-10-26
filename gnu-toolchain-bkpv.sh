@@ -27,7 +27,7 @@ make report-binutils-newlib -j $(nproc)
 
 # make rv32
 make clean
-./configure --prefix="$PWD/opt-riscv-rv32/" --with-arch=rv32gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zprv_zpsf --with-abi=ilp32d --with-multilib-generator="rv32gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zprv_zpsf-ilp32d--"
+./configure --prefix="$PWD/opt-riscv-rv32/" --with-arch=rv32gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zpsf --with-abi=ilp32d --with-multilib-generator="rv32gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zpsf-ilp32d--"
 make -j $(nproc)
 
 #test rv32
