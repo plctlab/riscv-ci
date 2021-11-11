@@ -17,6 +17,7 @@ git remote add plctlab https://github.com/plctlab/plct-qemu.git
 git fetch plctlab
 git checkout plctlab/plct-zce-dev
 
+cd ..
 
 sed -i '15c qemu-riscv$xlen -cpu rv64,x-zce=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 
