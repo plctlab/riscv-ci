@@ -24,7 +24,7 @@ git checkout $REPO_HOME/tools/clone.sh
 cd ..
 
 #download riscv-arch-test
-git clone -b k-extension https://github.com/liweiwei90/riscv-arch-test.git
+git clone -b k-extension-with-xperm4_8 https://github.com/liweiwei90/riscv-arch-test.git
 cd riscv-arch-test
 
 cp -r ../riscv-crypto/extern/riscv-isa-sim/arch_test_target/spike/* riscv-target/spike/
