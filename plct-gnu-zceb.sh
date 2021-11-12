@@ -10,7 +10,7 @@ cd ../riscv-binutils
 
 git remote add lin https://github.com/linsinan1995/riscv-binutils-gdb.git
 git fetch lin 
-git checkout lin/riscv-binutils-experiment-zceb@cleanup
+git checkout lin/riscv-binutils-experiment-zceb@clean-up
 
 cd ../qemu
 git remote add plctlab https://github.com/plctlab/plct-qemu.git
