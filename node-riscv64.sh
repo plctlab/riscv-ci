@@ -1,4 +1,4 @@
-git clone git@github.com:nodejs/node.git
+git clone https://github.com/nodejs/node.git
 cd node
 export CC=riscv64-unknown-linux-gnu-gcc
 export CXX=riscv64-unknown-linux-gnu-g++
