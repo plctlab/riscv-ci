@@ -3,9 +3,8 @@
 # Add riscv64 toolchain into PATH
 export PATH="$PATH:/opt/riscv/bin"
 
-git clone https://github.com/v8-riscv/node.git
+git clone https://github.com/nodejs/node.git
 cd node
-git checkout v17.0.0-riscv64-v1
 export CC=riscv64-unknown-linux-gnu-gcc
 export CXX=riscv64-unknown-linux-gnu-g++
 export CC_host=gcc
