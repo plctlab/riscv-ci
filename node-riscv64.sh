@@ -12,6 +12,7 @@ git config user.email "you@example.com"
 git config user.name "Your Name"
 git remote add upstream https://github.com/nodejs/node.git
 git fetch upstream
+git log upstream/master -10 --oneline
 git rebase upstream/master
 export CC=riscv64-unknown-linux-gnu-gcc
 export CXX=riscv64-unknown-linux-gnu-g++
