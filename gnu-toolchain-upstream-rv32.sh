@@ -17,7 +17,6 @@ git checkout plctlab/new-machine-dev
 cd ..
 
 # make rv32
-make clean
 ./configure --prefix="$PWD/opt-riscv-rv32/" --with-arch=rv32gc --with-abi=ilp32 --with-multilib-generator="rv32gc-ilp32--"
 make -j $(nproc)
 
