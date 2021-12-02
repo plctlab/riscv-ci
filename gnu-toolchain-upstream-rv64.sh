@@ -17,7 +17,6 @@ git checkout plctlab/new-machine-dev
 cd ..
 
 # make rv64
-make clean
 ./configure --prefix="$PWD/opt-riscv-rv64/" --with-arch=rv64gc --with-abi=lp64 --with-multilib-generator="rv64gc-lp64--"
 make -j $(nproc)
 
