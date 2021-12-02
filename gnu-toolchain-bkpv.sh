@@ -17,7 +17,7 @@ git checkout plctlab/new-machine-dev
 cd ..
 
 # make rv64
-./configure --prefix="$PWD/opt-riscv-rv64/" --with-arch=rv64gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zpsf --with-abi=lp64d --with-multilib-generator="rv64gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zprv_zpsf-lp64d--"
+./configure --prefix="$PWD/opt-riscv-rv64/" --with-arch=rv64gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zpsf --with-abi=lp64d --with-multilib-generator="rv64gcv_zba_zbb_zbc_zbs_zbkb_zbkc_zbkx_zkne_zknd_zknh_zksed_zksh_zkt_zpn_zpsf-lp64d--"
 make -j $(nproc)
 
 # test rv64
