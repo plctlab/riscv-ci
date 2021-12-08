@@ -21,6 +21,5 @@ cd ..
 make -j $(nproc)
 
 #test rv32
-make report-binutils-newlib -j $(nproc)
-make report-gcc-newlib -j $(nproc)
-make report-binutils-newlib -j $(nproc)
+make check-gcc-newlib -j $(nproc)
+make check-binutils -j $(nproc)
