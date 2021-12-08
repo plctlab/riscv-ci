@@ -19,7 +19,7 @@ git checkout plctlab/plct-zce-dev
 
 cd ..
 
-sed -i '15c qemu-riscv$xlen -cpu rv64,x-zce=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu sifive-e51,x-zceb=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 
 
 ./configure --prefix="$PWD/opt-riscv-rv64zceb" --with-arch=rv64imac_zceb --with-abi=lp64 --with-multilib-generator="rv64imac_zceb-lp64--"
