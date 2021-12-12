@@ -21,23 +21,27 @@ cd ..
 
 sed -i '15c qemu-riscv$xlen -cpu rv64,g=false,f=false,d=false,Zfinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv64zfinx" --with-arch=rv64imazfinx --with-abi=lp64 --with-multilib-generator="rv64imazfinx-lp64--"
+make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 make clean
 sed -i '15c qemu-riscv$xlen -cpu rv64,g=false,f=false,d=false,Zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv64zdinx" --with-arch=rv64imazdinx --with-abi=lp64 --with-multilib-generator="rv64imazdinx-lp64--"
+make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 make clean
-sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,Zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,Zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv32zdinx" --with-arch=rv32imazdinx --with-abi=ilp32 --with-multilib-generator="rv32imazdinx-ilp32--"
+make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 make clean
-sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,Zfinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,Zfinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv32zfinx" --with-arch=rv32imazfinx --with-abi=ilp32 --with-multilib-generator="rv32imazfinx-ilp32--"
+make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
