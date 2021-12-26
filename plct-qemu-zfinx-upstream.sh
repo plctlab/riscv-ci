@@ -14,8 +14,8 @@ git checkout syl/riscv-binutils-2.35-zfinx
 
 cd ../qemu
 git remote add plctlab https://github.com/plctlab/plct-qemu.git
-git fetch plctlab plct-zfinx-upstream
-git checkout plctlab/plct-zfinx-upstream
+git fetch plctlab plct-zfinx-upstream-v2
+git checkout plctlab/plct-zfinx-upstream-v2
 
 cd ..
 
