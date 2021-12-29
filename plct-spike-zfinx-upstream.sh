@@ -25,6 +25,7 @@ make report-gcc-newlib -j $(nproc) SIM=spike
 make report-binutils-newlib -j $(nproc) SIM=spike
 make clean
 
+sed -i "s|rv32gc|rv32imazdinx|" Makefile.in
 sed -i '6c \ \ \ \ --isa=rv32imac_zdinx_zfh \\' scripts/wrapper/spike/riscv32-unknown-elf-run
 ./configure --prefix="$PWD/opt-riscv-rv32zdinx" --with-arch=rv32imazdinx --with-abi=ilp32 --with-multilib-generator="rv32imazdinx-ilp32--"
 make -j $(nproc)
