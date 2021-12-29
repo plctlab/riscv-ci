@@ -96,4 +96,15 @@ run_all_sim_build_checks
 # build_cross_builds
 # run_on_qemu
 
-
+# if the above 10 regressions pass, push forward riscv64 branch to the latest master committ
+cd $V8_ROOT/v8
+git remote add riscv https://github.com/v8-riscv/v8.git
+git fetch riscv
+git checkout riscv64
+gclient sync
+# for debug
+git log -1
+git merge main
+# for debug
+git log -1
+git push riscv riscv64
