@@ -1,6 +1,27 @@
 git clone https://github.com/pz9115/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init
+
+cd qemu
+git remote add plctlab https://github.com/plctlab/plct-qemu.git
+git fetch plctlab plct-zfinx-upstream-v2
+git checkout plctlab/plct-zfinx-upstream-v2
+
+cd ..
+
+./configure --prefix="$PWD/opt-riscv-rv64" --with-arch=rv64gc --with-abi=lp64d
+make -j $(nproc)
+make report-gcc-newlib -j $(nproc)
+make report-binutils-newlib -j $(nproc)
+
+make clean
+./configure --prefix="$PWD/opt-riscv-rv32" --with-arch=rv32gc --with-abi=ilp32d
+make -j $(nproc)
+make report-gcc-newlib -j $(nproc)
+make report-binutils-newlib -j $(nproc)
+
+make clean
+
 cd riscv-gcc
 git remote add syl https://github.com/pz9115/riscv-gcc.git 
 git fetch syl riscv-gcc-10.2.0-zfinx
@@ -12,13 +33,9 @@ git remote add syl https://github.com/pz9115/riscv-binutils-gdb.git
 git fetch syl riscv-binutils-2.35-zfinx
 git checkout syl/riscv-binutils-2.35-zfinx
 
-cd ../qemu
-git remote add plctlab https://github.com/plctlab/plct-qemu.git
-git fetch plctlab plct-zfinx-upstream-v2
-git checkout plctlab/plct-zfinx-upstream-v2
-
 cd ..
 
+make clean
 sed -i '15c qemu-riscv$xlen -cpu rv64,g=false,f=false,d=false,Zfinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv64zfinx" --with-arch=rv64imazfinx --with-abi=lp64 --with-multilib-generator="rv64imazfinx-lp64--"
 make -j $(nproc)
