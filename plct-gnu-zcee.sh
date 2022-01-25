@@ -2,7 +2,7 @@ git clone https://github.com/pz9115/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init
 cd riscv-gcc
-git remote add syl https://github.com/pz9115/corev-gcc.git
+git remote add syl https://github.com/yulong-plct/corev-gcc.git
 git fetch syl
 git checkout syl/development
 
