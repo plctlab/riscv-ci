@@ -15,8 +15,8 @@ git checkout syl/riscv-binutils-2.35-zfinx
 
 cd ../qemu
 git remote add plctlab https://github.com/plctlab/plct-qemu.git
-git fetch plctlab plct-zfinx-upstream-v5
-git checkout plctlab/plct-zfinx-upstream-v5
+git fetch plctlab plct-zfinx-upstream-v6
+git checkout plctlab/plct-zfinx-upstream-v6
 cd ..
 
 ./configure --prefix="$PWD/opt-riscv-rv64" --with-arch=rv64gc --with-abi=lp64d
@@ -31,14 +31,14 @@ make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 make clean
-sed -i '15c qemu-riscv$xlen -cpu rv64,g=false,f=false,d=false,Zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv64,g=false,f=false,d=false,zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv64zdinx" --with-arch=rv64imazdinx --with-abi=lp64 --with-multilib-generator="rv64imazdinx-lp64--"
 make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 
 make clean
-sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,Zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv32,g=false,f=false,d=false,zdinx=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv32-unknown-elf-run 
 ./configure --prefix="$PWD/opt-riscv-rv32zdinx" --with-arch=rv32imazdinx --with-abi=ilp32 --with-multilib-generator="rv32imazdinx-ilp32--"
 make -j $(nproc)
 make report-gcc-newlib -j $(nproc)
