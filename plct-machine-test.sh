@@ -12,7 +12,7 @@ git checkout pz9115/riscv-binutils-experimental-v
 cd ../qemu
 git remote add plctlab https://github.com/plctlab/plct-qemu.git
 git fetch plctlab
-git checkout plctlab/new-machine-dev
+git checkout plctlab/plct-machine-dev
 
 cd ..
 
@@ -21,7 +21,7 @@ cd ..
 make -j $(nproc)
 
 # test rv64
-sed -i '15c qemu-riscv$xlen  -cpu rv64,x-zba=true,x-zbb=true,x-zbc=true,x-zbs=true,x-zkn=true,x-zks=true,x-zkr=true,x-p=true,v=true,x-svinval=true,x-svnapot=true,x-svpbmt=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv64,x-zba=true,x-zbb=true,x-zbc=true,x-zbs=true,x-zkn=true,x-zks=true,x-zkr=true,x-p=true,v=true,x-svinval=true,x-svnapot=true,x-svpbmt=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 make report-gcc-newlib -j $(nproc)
 make report-binutils-newlib -j $(nproc)
 

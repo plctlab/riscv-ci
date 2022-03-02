@@ -6,14 +6,10 @@ wget https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2021.
      tar xzvf riscv64-glibc-ubuntu-20.04-nightly-2021.09.21-nightly.tar.gz  -C $HOME/
 export PATH="$PATH:$HOME/riscv/bin/"
 
-git clone https://github.com/v8-riscv/node.git
+git clone https://github.com/nodejs/node.git
 cd node 
 git config user.email "you@example.com"
 git config user.name "Your Name"
-git remote add upstream https://github.com/nodejs/node.git
-git fetch upstream
-git log upstream/master -10 --oneline
-git rebase upstream/master
 export CC=riscv64-unknown-linux-gnu-gcc
 export CXX=riscv64-unknown-linux-gnu-g++
 export CC_host=gcc

@@ -12,16 +12,13 @@ git remote add lin https://github.com/linsinan1995/riscv-binutils-gdb.git
 git fetch lin 
 git checkout lin/riscv-binutils-experiment-zceb@clean-up
 
-cd ../qemu
-git remote add plctlab https://github.com/plctlab/plct-qemu.git
-git fetch plctlab
-git checkout plctlab/plct-zce-dev
-
 cd ..
 
-sed -i '15c qemu-riscv$xlen -cpu sifive-e51,x-zceb=true -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i "s|SPIKE_BRANCH:=master|SPIKE_BRANCH:=plct-zce-dev|" Makefile.in
+sed -i "s|/riscv/riscv-isa-sim|/plctlab/plct-spike|" Makefile.in
 
+sed -i '6c \ \ \ \ --isa=RV${xlen}imac_zceb \\' scripts/wrapper/spike/riscv64-unknown-elf-run 
 
 ./configure --prefix="$PWD/opt-riscv-rv64zceb" --with-arch=rv64imac_zceb --with-abi=lp64 --with-multilib-generator="rv64imac_zceb-lp64--"
-make report-gcc-newlib -j $(nproc)
-make report-binutils-newlib -j $(nproc)
+make report-gcc-newlib -j $(nproc) SIM=spike
+make report-binutils-newlib -j $(nproc) SIM=spike

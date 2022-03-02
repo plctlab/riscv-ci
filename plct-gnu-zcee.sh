@@ -2,15 +2,15 @@ git clone https://github.com/pz9115/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init
 cd riscv-gcc
-git remote add syl https://github.com/pz9115/corev-gcc.git
-git fetch syl
-git checkout syl/development
+git remote add corev https://github.com/plctlab/corev-gcc.git
+git fetch corev
+git checkout corev/development
 
 cd ../riscv-binutils
 
-git remote add syl https://github.com/pz9115/corev-binutils-gdb.git
-git fetch syl 
-git checkout syl/development 
+git remote add corev https://github.com/plctlab/corev-binutils-gdb.git
+git fetch corev 
+git checkout corev/development 
 
 cd ../qemu
 git remote add plctlab https://github.com/plctlab/plct-qemu.git
