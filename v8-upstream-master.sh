@@ -39,7 +39,7 @@ run_sim_test () {
     shift
   done
 
-  python2 ./tools/run-tests.py $ARGS # 2>&1 | tee "$LOG_FILE.simbuild.$BTYPE.${t}${SUFFIX}"
+  python3 ./tools/run-tests.py $ARGS # 2>&1 | tee "$LOG_FILE.simbuild.$BTYPE.${t}${SUFFIX}"
 }
 
 run_all_sim_build_checks () {
