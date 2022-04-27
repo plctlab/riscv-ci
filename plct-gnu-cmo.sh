@@ -13,12 +13,13 @@ git fetch cmo
 git checkout cmo/master 
 
 cd ../qemu
-git fetch origin
-git checkout origin/master
+git remote add cmo https://github.com/patchew-project/qemu.git
+git fetch cmo tags/patchew/20220124140023.1165850-1-cmuellner@linux.com
+git checkout FETCH_HEAD
 
 cd ..
 
-sed -i '15c qemu-riscv$xlen -cpu rv64,Zicbom=on,Zicboz=on,Zicbop=on -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
+sed -i '15c qemu-riscv$xlen -cpu rv64,Zicbom=on,Zicboz=on,Zicbop=on, -r 5.10 "${qemu_args[@]}" -L ${RISC_V_SYSROOT} "$@"' scripts/wrapper/qemu/riscv64-unknown-elf-run 
 
 
 ./configure --prefix="$PWD/opt-riscv-rv64cmo" --with-arch=rv64gc_zicbom_zicboz_zicbop --with-abi=lp64d --with-multilib-generator="rv64gc_zicbom_zicboz_zicbop-lp64d--"
