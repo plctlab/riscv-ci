@@ -29,7 +29,7 @@ gclient sync
 # arg 1: outdir
 # arg 2: extra args for run-tests.py
 run_sim_test () {
-  ARGS="-p verbose --report --outdir=$1"
+  ARGS="-p verbose  --outdir=$1"
   SUFFIX=""
   BTYPE="${1##*riscv64.sim.}"
   while [ $# -ge 2 ]; do
