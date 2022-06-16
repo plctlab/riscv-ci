@@ -21,5 +21,5 @@ cd ..
 make -j $(nproc)
 
 # test rv64
-make report-gcc-newlib -j $(nproc) &
+make report-gcc-newlib -j $(nproc) &&
 make report-binutils -j $(nproc)
