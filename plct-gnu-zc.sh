@@ -20,5 +20,5 @@ git checkout plctlab/plct-zce-dev
 cd ..
 
 ./configure --prefix="$PWD/opt-riscv-rv64zc"
-make report-gcc-newlib -j $(nproc) &
+make report-gcc-newlib -j $(nproc) &&
 make report-binutils-newlib -j $(nproc)
