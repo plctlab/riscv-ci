@@ -3,7 +3,7 @@ mkdir build
 cd build
 cmake \
 	-DCMAKE_BUILD_TYPE=Debug \
-	-DLLVM_ENALBE_PROJECTS="clang;lld" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld" \
 	-DLLVM_PARALLEL_LINK_JOBS=3 \
 	-G Ninja \
 	../llvm
