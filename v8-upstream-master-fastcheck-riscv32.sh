@@ -49,7 +49,7 @@ run_all_sim_build_checks () {
   gn gen out/riscv32.sim.debug \
     --args='is_component_build=false
     is_debug=true
-    target_cpu="x64"
+    target_cpu="x86"
     v8_target_cpu="riscv32"
     use_goma=false
     goma_dir="None"' && \
@@ -62,7 +62,7 @@ run_all_sim_build_checks () {
   gn gen out/riscv32.sim.release \
     --args='is_component_build=false
     is_debug=false
-    target_cpu="x64"
+    target_cpu="x86"
     v8_target_cpu="riscv32"
     use_goma=false
     goma_dir="None"' && \
