@@ -55,7 +55,7 @@ run_all_sim_build_checks () {
     goma_dir="None"' && \
   ninja -C out/riscv32.sim.debug -j $(nproc) || exit 3
   run_sim_test out/riscv32.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
-  run_sim_test out/riscv32.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
+  #run_sim_test out/riscv32.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
   #run_sim_test out/riscv32.sim.debug jitless
 
   # build simulator config
