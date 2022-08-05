@@ -46,19 +46,6 @@ run_all_sim_build_checks () {
   cd "$V8_ROOT/v8"
 
   # build simulator config
-  gn gen out/riscv32.sim.debug \
-    --args='is_component_build=false
-    is_debug=true
-    target_cpu="x86"
-    v8_target_cpu="riscv32"
-    use_goma=false
-    goma_dir="None"'
-  ninja -C out/riscv32.sim.debug -j $(nproc) || exit 3
-  run_sim_test out/riscv32.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
-  run_sim_test out/riscv32.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
-  #run_sim_test out/riscv32.sim.debug jitless
-
-  # build simulator config
   gn gen out/riscv32.sim.release \
     --args='is_component_build=false
     is_debug=false
@@ -70,6 +57,19 @@ run_all_sim_build_checks () {
   run_sim_test out/riscv32.sim.release # 2>&1 | tee "$LOG_FILE.sim.release"
   run_sim_test out/riscv32.sim.release stress # 2>&1 | tee "$LOG_FILE.sim.release.stress"
   #run_sim_test out/riscv32.sim.release jitless
+
+  # build simulator config
+  gn gen out/riscv32.sim.debug \
+    --args='is_component_build=false
+    is_debug=true
+    target_cpu="x86"
+    v8_target_cpu="riscv32"
+    use_goma=false
+    goma_dir="None"'
+  ninja -C out/riscv32.sim.debug -j $(nproc) || exit 3
+  run_sim_test out/riscv32.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
+  run_sim_test out/riscv32.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
+  #run_sim_test out/riscv32.sim.debug jitless
 
 }
 
