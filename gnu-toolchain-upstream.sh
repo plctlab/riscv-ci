@@ -3,14 +3,14 @@ cd riscv-gnu-toolchain
 git submodule update --init --recursive
 cd gcc
 git fetch origin
-git checkout git checkout origin/master
+git pull origin master
 cd ../binutils
 git fetch origin
-git checkout git checkout origin/master
+git pull origin master
 cd ..
 
 # make rv32
-./configure --prefix="$PWD/opt-riscv-rv64/" --with-arch=rv64gc --with-abi=lp64d
+./configure --prefix="$PWD/opt-riscv-rv32/" --with-arch=rv32gc --with-abi=ilp32d
 make -j $(nproc)
 
 #test rv32
