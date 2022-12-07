@@ -3,10 +3,10 @@ cd riscv-gnu-toolchain
 git submodule update --init --recursive
 cd gcc
 git fetch origin
-git pull origin master
+git checkout origin/master -f
 cd ../binutils
 git fetch origin
-git pull origin master
+git checkout orignin/master -f
 cd ..
 
 # make rv32
