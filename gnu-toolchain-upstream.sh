@@ -6,7 +6,7 @@ git fetch origin
 git checkout origin/master -f
 cd ../binutils
 git fetch origin
-git checkout orignin/master -f
+git checkout origin/master -f
 cd ..
 
 # make rv32
