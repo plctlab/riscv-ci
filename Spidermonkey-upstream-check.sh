@@ -2,6 +2,9 @@
 
 set -e
 
+if [ -d "gecko-dev" ];then
+   rm -rf gecko-dev
+fi
 git clone https://github.com/mozilla/gecko-dev.git
 
 curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
