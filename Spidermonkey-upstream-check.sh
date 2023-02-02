@@ -5,7 +5,7 @@ set -e
 git clone https://github.com/mozilla/gecko-dev.git
 
 curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
-export PATH="$PWD/clang/bin/"
+export PATH="$PWD/clang/bin/:$PATH"
 
 
 echo "# Build only the JS shell
