@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 git clone https://github.com/mozilla/gecko-dev.git
