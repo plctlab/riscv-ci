@@ -9,10 +9,10 @@ python3 -m pip install --user mercurial
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 hg version
 
-if [ -d "gecko-dev" ];then
+if [ -d "mozilla-unified" ];then
    cd mozilla-unified
-   git fetch origin
-   git checkout origin/master
+   hg pull
+   cd ..
 else
    curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
    python3 bootstrap.py  --application-choice=js --no-interactive 
