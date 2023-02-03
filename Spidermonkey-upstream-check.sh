@@ -15,7 +15,7 @@ if [ -d "gecko-dev" ];then
    git checkout origin/master
 else
    curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
-   python3 bootstrap.py  --vcs=git --application-choice=js --no-interactive 
+   python3 bootstrap.py  --application-choice=js --no-interactive 
 fi
 
 
