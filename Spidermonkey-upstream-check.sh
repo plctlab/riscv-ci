@@ -5,10 +5,16 @@ set -e
 if [ -d "gecko-dev" ];then
    rm -rf gecko-dev
 fi
-git clone https://github.com/mozilla/gecko-dev.git
 
-curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
-export PATH="$PWD/clang/bin/:$PATH"
+python3 -m pip install --user mercurial
+hg version
+export PATH="'"$(python3 -m site --user-base)"'/bin:$PATH"
+
+curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
+python3 bootstrap.py  --vcs=git --no-interactive 
+
+# curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
+# export PATH="$PWD/clang/bin/:$PATH"
 
 
 echo "# Build only the JS shell
@@ -32,7 +38,7 @@ ac_add_options --enable-jit" > mozconfig
 
 export MOZCONFIG=$PWD/mozconfig
 
-cd gecko-dev
+cd mozilla-unified
 
 git log -1
 
