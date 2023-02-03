@@ -17,7 +17,6 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-opt-@CONFIG_GUESS@
 ac_add_options --enable-jitspew
 ac_add_options --disable-bootstrap
 ac_add_options --disable-rust-simd
-ac_add_options --disable-wasm-memory64
 ac_add_options --enable-simulator=riscv64
 ac_add_options --enable-jit" > mozconfig
 
