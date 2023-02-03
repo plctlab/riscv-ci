@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## System preparation
+## sudo apt-get install -y bash findutils gzip libxml2 m4 make perl tar unzip watchman rustc
+
 set -e
 
 if [ -d "gecko-dev" ];then
