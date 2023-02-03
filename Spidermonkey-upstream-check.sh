@@ -7,6 +7,7 @@ if [ -d "gecko-dev" ];then
 fi
 
 python3 -m pip install --user mercurial
+export PATH="'"$(python3 -m site --user-base)"'/bin:$PATH"
 hg version
 
 
