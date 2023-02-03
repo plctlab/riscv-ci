@@ -11,7 +11,7 @@ hg version
 export PATH="'"$(python3 -m site --user-base)"'/bin:$PATH"
 
 curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
-python3 bootstrap.py  --vcs=git --no-interactive 
+python3 bootstrap.py  --vcs=git --application-choice=js --no-interactive 
 
 # curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
 # export PATH="$PWD/clang/bin/:$PATH"
