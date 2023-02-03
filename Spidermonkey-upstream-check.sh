@@ -42,6 +42,8 @@ fi
 
 hg log -l 1
 
+rm -rf ./obj-opt-x86_64-pc-linux-gnu
+
 ./mach build
 
 ./mach jsapi-tests
