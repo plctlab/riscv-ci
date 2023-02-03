@@ -48,4 +48,4 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 ./mach jsapi-tests
 ./mach jstests  --format automation
 ./mach jittest -t 400 --format automation
-
+./mach jittest -ion -t 400 --format automation
