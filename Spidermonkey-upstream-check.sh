@@ -28,7 +28,7 @@ ac_add_options --disable-bootstrap
 ac_add_options --disable-rust-simd
 ac_add_options --disable-wasm-memory64
 ac_add_options --enable-simulator=riscv64
-ac_add_options --enable-jit" >> mozconfig
+ac_add_options --enable-jit" > mozconfig
 
 export MOZCONFIG=$PWD/mozconfig
 
