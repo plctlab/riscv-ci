@@ -10,15 +10,11 @@ export PATH="$(python3 -m site --user-base)/bin:$PATH"
 hg version
 
 if [ -d "mozilla-unified" ];then
-   cd mozilla-unified
-   hg pull
-   cd ..
-else
-   curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
-   python3 bootstrap.py  --application-choice=js --no-interactive 
+   rm -rf mozilla-unified
 fi
 
-
+curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
+python3 bootstrap.py  --application-choice=js --no-interactive 
 
 # curl -s https://raw.githubusercontent.com/chromium/chromium/main/tools/clang/scripts/update.py | python3 - --output-dir=$PWD/clang
 # export PATH="$PWD/clang/bin/:$PATH"
