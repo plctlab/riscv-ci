@@ -39,7 +39,7 @@ else
    cd mozilla-unified
 fi
 
-git log -1
+hg log -l 1
 
 ./mach build
 
