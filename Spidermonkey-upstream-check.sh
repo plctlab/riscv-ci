@@ -46,7 +46,7 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
 ./mach build
 
-./mach jsapi-tests --format automation
+./mach jsapi-tests
 ./mach jstests  --format automation
 ./mach jittest -t 200 --format automation
 
