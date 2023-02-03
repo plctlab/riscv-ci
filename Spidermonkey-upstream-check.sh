@@ -44,5 +44,7 @@ hg log -l 1
 
 ./mach build
 
+./mach jsapi-tests
+./mach jstests 
 ./mach jittest
 
