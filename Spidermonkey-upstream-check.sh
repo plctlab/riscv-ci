@@ -30,14 +30,18 @@ python3 -m pip install --user mercurial
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 hg version
 
-if [ -d "mozilla-unified" ];then
-   cd mozilla-unified
-   hg pull
-else
-   curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
-   python3 bootstrap.py  --application-choice=js --no-interactive
-   cd mozilla-unified
-fi
+# if [ -d "mozilla-unified" ];then
+#    cd mozilla-unified
+#    hg pull
+# else
+#    curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
+#    python3 bootstrap.py  --application-choice=js --no-interactive
+#    cd mozilla-unified
+# fi
+
+curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
+python3 bootstrap.py  --application-choice=js --no-interactive  --no-system-changes
+cd mozilla-unified
 
 hg log -l 1
 
