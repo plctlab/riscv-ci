@@ -8,7 +8,7 @@ fi
 
 python3 -m pip install --user mercurial
 hg version
-export PATH="'"$(python3 -m site --user-base)"'/bin:$PATH"
+
 
 curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
 python3 bootstrap.py  --vcs=git --application-choice=js --no-interactive 
