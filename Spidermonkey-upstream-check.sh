@@ -50,4 +50,4 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
 ## skip --spectre-mitigations=on case
 ./mach jittest -t 400 -x ion/bug1433496.js --format automation
-./mach jittest --ion -t 400 -x ion/bug1433496.js
+./mach jittest --ion -t 800 -x ion/bug1433496.js --format automation
