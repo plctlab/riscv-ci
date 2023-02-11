@@ -1,11 +1,11 @@
 git clone https://github.com/pz9115/riscv-gnu-toolchain.git 
 cd riscv-gnu-toolchain
 git submodule update --init
-cd riscv-gcc
+cd gcc
 git remote add pz9115 https://github.com/pz9115/riscv-gcc.git
 git fetch pz9115
 git checkout pz9115/riscv-gcc-experimental-v
-cd ../riscv-binutils
+cd ../gdb
 git remote add pz9115 https://github.com/pz9115/riscv-binutils-gdb.git
 git fetch pz9115
 git checkout pz9115/riscv-binutils-experimental-v
