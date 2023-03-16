@@ -37,7 +37,8 @@ else
 fi
 
 hg log -l 1
-
+rm -rf ./obj-*
+./mach clobber
 ./mach build
 
 ./mach jsapi-tests
