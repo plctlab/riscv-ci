@@ -29,7 +29,7 @@ python3 -m pip install --user mercurial
 export PATH="$(python3 -m site --user-base)/bin:$PATH"
 hg version
 
-
+rm -rf ./mozilla-unified
 if [ -d "mozilla-unified" ];then
    cd mozilla-unified
    hg pull
