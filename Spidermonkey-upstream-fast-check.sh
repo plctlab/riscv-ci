@@ -38,6 +38,6 @@ hg log -l 1
 ./mach build
 
 ./mach jsapi-tests
-./mach jstests --format automation
+./mach jstests -t 400 --format automation
 ./mach jittest -ion -t 400 --format automation
 
