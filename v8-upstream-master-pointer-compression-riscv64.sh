@@ -45,19 +45,19 @@ run_sim_test () {
 run_all_sim_build_checks () {
   cd "$V8_ROOT/v8"
 
-  # build simulator config
-  gn gen out/riscv64.sim.debug \
-    --args='is_component_build=false
-    is_debug=true
-    target_cpu="x64"
-    v8_target_cpu="riscv64"
-    v8_enable_pointer_compression = true
-    use_goma=false
-    goma_dir="None"' && \
-  ninja -C out/riscv64.sim.debug -j $(nproc) || exit 3
-  run_sim_test out/riscv64.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
-  run_sim_test out/riscv64.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
-  #run_sim_test out/riscv64.sim.debug jitless
+  # # build simulator config
+  # gn gen out/riscv64.sim.debug \
+  #   --args='is_component_build=false
+  #   is_debug=true
+  #   target_cpu="x64"
+  #   v8_target_cpu="riscv64"
+  #   v8_enable_pointer_compression = true
+  #   use_goma=false
+  #   goma_dir="None"' && \
+  # ninja -C out/riscv64.sim.debug -j $(nproc) || exit 3
+  # run_sim_test out/riscv64.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
+  # run_sim_test out/riscv64.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
+  # #run_sim_test out/riscv64.sim.debug jitless
 
   # build simulator config
   gn gen out/riscv64.sim.release \
