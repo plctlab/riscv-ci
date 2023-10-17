@@ -5,6 +5,8 @@
 
 set -e
 
+rustup update # update rustc
+
 echo "# Build only the JS shell
 ac_add_options --enable-application=js
 
