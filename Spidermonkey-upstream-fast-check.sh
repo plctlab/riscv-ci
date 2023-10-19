@@ -6,7 +6,7 @@
 set -e
 
 rustc --version
-rustup update # update rustc
+rustup toolchain install stable
 
 echo "# Build only the JS shell
 ac_add_options --enable-application=js
