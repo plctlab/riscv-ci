@@ -10,9 +10,10 @@ rustup toolchain install stable
 rustup toolchain list -v
 /home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --version
 alias rustc='/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc'
+which rustc
 rustc --version
 ~/rustc --version
-which rustc
+
 
 echo "# Build only the JS shell
 ac_add_options --enable-application=js
