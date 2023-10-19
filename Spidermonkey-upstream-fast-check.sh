@@ -5,6 +5,7 @@
 
 set -e
 
+rustc --version
 rustup update # update rustc
 
 echo "# Build only the JS shell
