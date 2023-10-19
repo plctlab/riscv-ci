@@ -9,6 +9,8 @@ set -e
 rustup toolchain install stable
 rustup toolchain list -v
 /home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --version
+alias rustc='/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc'
+rustc --versio 
 ~/rustc --version
 which rustc
 
