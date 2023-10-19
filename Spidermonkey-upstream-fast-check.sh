@@ -5,8 +5,9 @@
 
 set -e
 
-alias rustc='~/.cargo/bin/rustc'
+
 rustup toolchain install stable
+alias rustc='~/.cargo/bin/rustc'
 rustc --version
 
 echo "# Build only the JS shell
