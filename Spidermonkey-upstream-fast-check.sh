@@ -8,8 +8,8 @@ set -e
 
 rustup toolchain install stable
 rustup toolchain list -v
-export PATH=$PATH:/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/
-rustc --version
+/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --version
+~/rustc --version
 which rustc
 
 echo "# Build only the JS shell
