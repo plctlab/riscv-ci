@@ -9,6 +9,7 @@ set -e
 rustup toolchain install stable
 ~/.cargo/bin/rustc --version
 rustc --version
+which rustc
 
 echo "# Build only the JS shell
 ac_add_options --enable-application=js
