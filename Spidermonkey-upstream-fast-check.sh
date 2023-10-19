@@ -5,6 +5,7 @@
 
 set -e
 
+export PATH=$PATH:~/.cargo/bin/
 rustup toolchain install stable
 rustc --version
 
