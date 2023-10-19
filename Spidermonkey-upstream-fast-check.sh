@@ -7,6 +7,7 @@ set -e
 
 
 rustup toolchain install stable
+rustup toolchain list -v
 ~/.cargo/bin/rustc --version
 rustc --version
 which rustc
