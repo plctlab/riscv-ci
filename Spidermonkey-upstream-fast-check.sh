@@ -8,8 +8,8 @@ set -e
 
 rustup toolchain install stable
 rustup toolchain list -v
+export PATH=/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/:$PATH
 /home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --version
-alias rustc='/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc'
 which rustc
 rustc --version
 ~/rustc --version
