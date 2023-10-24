@@ -11,6 +11,7 @@ rustup toolchain list -v
 export PATH=/home/jenkinsbot/snap/rustup/common/rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/:$PATH
 rustc --version
 
+rm -rf $HOME/.mozbuild
 
 echo "# Build only the JS shell
 ac_add_options --enable-application=js
