@@ -2,8 +2,8 @@
 
 # Add riscv64 toolchain into PATH
 
-wget https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2021.09.21/riscv64-glibc-ubuntu-20.04-nightly-2021.09.21-nightly.tar.gz && \
-     tar xzvf riscv64-glibc-ubuntu-20.04-nightly-2021.09.21-nightly.tar.gz  -C $HOME/
+wget https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2023.11.08/riscv64-glibc-ubuntu-20.04-gcc-nightly-2023.11.08-nightly.tar.gz && \
+     tar xzvf riscv64-glibc-ubuntu-20.04-gcc-nightly-2023.11.08-nightly.tar.gz  -C $HOME/
 export PATH="$PATH:$HOME/riscv/bin/"
 
 rm -rf node
@@ -14,6 +14,8 @@ git config user.name "Your Name"
 
 git log -1
 
+gcc --version
+riscv64-unknown-linux-gnu-gcc --version
 export CC=riscv64-unknown-linux-gnu-gcc
 export CXX=riscv64-unknown-linux-gnu-g++
 export CC_host=gcc
