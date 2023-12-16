@@ -23,5 +23,4 @@ export CXX_host=g++
 
 ./configure --cross-compiling --dest-cpu=riscv64  --verbose --openssl-no-asm
 
-# Temporary reduce the parallel jobs to 4 due to new worker limitations.
-make -j 4
+make -j $(nproc)
