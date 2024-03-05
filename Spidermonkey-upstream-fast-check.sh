@@ -19,6 +19,7 @@ ac_add_options --enable-application=js
 # Enable optimization for speed
 ac_add_options  --enable-optimize
 
+ac_add_options  --disable-debug
 # Use a separate objdir for optimized builds to allow easy
 # switching between optimized and debug builds while developing.
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-opt-@CONFIG_GUESS@
