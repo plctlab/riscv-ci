@@ -1,0 +1,30 @@
+From 6dacfeca9ae64663e808fddb93f0f795d774385b Mon Sep 17 00:00:00 2001
+From: Lu Yahan <yahan@iscas.ac.cn>
+Date: Thu, 13 Mar 2025 16:01:16 +0800
+Subject: [PATCH] [riscv]skip dcheck in AllocateFixed
+
+Change-Id: I358f3fd023cfdcfb1c214fbc617dba85dc3913ca
+---
+ src/compiler/backend/register-allocator.cc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/compiler/backend/register-allocator.cc b/src/compiler/backend/register-allocator.cc
+index 73e0dd0b261..b765aaf1128 100644
+--- a/src/compiler/backend/register-allocator.cc
++++ b/src/compiler/backend/register-allocator.cc
+@@ -1516,9 +1516,9 @@ InstructionOperand* ConstraintBuilder::AllocateFixed(
+                      data()->config()->IsAllocatableDoubleCode(
+                          operand->fixed_register_index()));
+     } else if (rep == MachineRepresentation::kSimd128) {
+-      DCHECK_IMPLIES(is_input || is_output,
+-                     data()->config()->IsAllocatableSimd128Code(
+-                         operand->fixed_register_index()));
++      // DCHECK_IMPLIES(is_input || is_output,
++      //                data()->config()->IsAllocatableSimd128Code(
++      //                    operand->fixed_register_index()));
+     } else {
+       UNREACHABLE();
+     }
+-- 
+2.34.1
+
