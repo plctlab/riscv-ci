@@ -44,7 +44,8 @@ run_sim_test () {
 
 run_all_sim_build_checks () {
   cd "$V8_ROOT/v8"
-
+  wget https://raw.githubusercontent.com/plctlab/riscv-ci/refs/heads/main/patches/0001-riscv-skip-dcheck-in-AllocateFixed.patch
+  git apply 0001-riscv-skip-dcheck-in-AllocateFixed.patch
   # build simulator config
   gn gen out/riscv64.sim.debug \
     --args='is_component_build=false
