@@ -1,7 +1,7 @@
 git clone https://github.com/plctlab/riscv-vector-intrinsic-fuzzing.git rif
 cd rif
 
-git checkout --reset develop
+git checkout develop
 
 # No submodues yet.
 #git submodule update --init --recursive
