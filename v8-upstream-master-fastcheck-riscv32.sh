@@ -19,6 +19,9 @@ rm -rf $V8_ROOT
   mkdir -p $V8_ROOT
   cd $V8_ROOT
   fetch v8
+  cd v8
+  wget https://raw.githubusercontent.com/plctlab/riscv-ci/refs/heads/main/patches/0001-riscv-skip-dcheck-in-AllocateFixed.patch
+  git apply 0001-riscv-skip-dcheck-in-AllocateFixed.patch
 
 gclient sync
 
