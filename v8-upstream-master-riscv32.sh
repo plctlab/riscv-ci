@@ -55,7 +55,7 @@ run_all_sim_build_checks () {
     v8_target_cpu="riscv32"
     use_goma=false
     goma_dir="None"' && \
-  ninja -C out/riscv32.sim.release -j $(nproc) || exit 4
+  ninja -C out/riscv32.sim.release -j 16 || exit 4
   run_sim_test out/riscv32.sim.release # 2>&1 | tee "$LOG_FILE.sim.release"
   run_sim_test out/riscv32.sim.release stress # 2>&1 | tee "$LOG_FILE.sim.release.stress"
   #run_sim_test out/riscv32.sim.release jitless
@@ -68,7 +68,7 @@ run_all_sim_build_checks () {
     v8_target_cpu="riscv32"
     use_goma=false
     goma_dir="None"'
-  ninja -C out/riscv32.sim.debug -j $(nproc) || exit 3
+  ninja -C out/riscv32.sim.debug -j 16 || exit 3
   run_sim_test out/riscv32.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
   ## debug stress mode will failed. We will sjip it.
   #run_sim_test out/riscv32.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"

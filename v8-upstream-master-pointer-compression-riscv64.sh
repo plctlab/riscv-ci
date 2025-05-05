@@ -56,7 +56,7 @@ run_all_sim_build_checks () {
   #   v8_enable_pointer_compression = true
   #   use_goma=false
   #   goma_dir="None"' && \
-  # ninja -C out/riscv64.sim.debug -j $(nproc) || exit 3
+  # ninja -C out/riscv64.sim.debug -j 16 || exit 3
   # run_sim_test out/riscv64.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
   # run_sim_test out/riscv64.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
   # #run_sim_test out/riscv64.sim.debug jitless
@@ -70,7 +70,7 @@ run_all_sim_build_checks () {
     v8_enable_pointer_compression = true
     use_goma=false
     goma_dir="None"' && \
-  ninja -C out/riscv64.sim.release -j $(nproc) || exit 4
+  ninja -C out/riscv64.sim.release -j 16 || exit 4
   run_sim_test out/riscv64.sim.release # 2>&1 | tee "$LOG_FILE.sim.release"
   run_sim_test out/riscv64.sim.release stress # 2>&1 | tee "$LOG_FILE.sim.release.stress"
   #run_sim_test out/riscv64.sim.release jitless
