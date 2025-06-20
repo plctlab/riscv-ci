@@ -1,15 +1,15 @@
-From 6dacfeca9ae64663e808fddb93f0f795d774385b Mon Sep 17 00:00:00 2001
+From daae49363c734bfae20973d7d86099f430ad6a6c Mon Sep 17 00:00:00 2001
 From: Lu Yahan <yahan@iscas.ac.cn>
-Date: Thu, 13 Mar 2025 16:01:16 +0800
-Subject: [PATCH] [riscv]skip dcheck in AllocateFixed
+Date: Fri, 20 Jun 2025 16:44:52 +0800
+Subject: [PATCH] [riscv]riscv-skip-dcheck-in-AllocateFixed
 
-Change-Id: I358f3fd023cfdcfb1c214fbc617dba85dc3913ca
+Change-Id: I677d57f8fa11f30a88c83f1947f0e41dee70ed7c
 ---
  src/compiler/backend/register-allocator.cc | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/compiler/backend/register-allocator.cc b/src/compiler/backend/register-allocator.cc
-index 73e0dd0b261..b765aaf1128 100644
+index f519d37d21e..9e95e1b0407 100644
 --- a/src/compiler/backend/register-allocator.cc
 +++ b/src/compiler/backend/register-allocator.cc
 @@ -1516,9 +1516,9 @@ InstructionOperand* ConstraintBuilder::AllocateFixed(
@@ -22,9 +22,8 @@ index 73e0dd0b261..b765aaf1128 100644
 +      // DCHECK_IMPLIES(is_input || is_output,
 +      //                data()->config()->IsAllocatableSimd128Code(
 +      //                    operand->fixed_register_index()));
-     } else {
-       UNREACHABLE();
-     }
+ #ifdef V8_TARGET_ARCH_X64
+       // The ExtractF128 node with lane 0 to Simd128 maybe elided as alias to
+       // the corresponding Simd256 ymm register on x64.
 -- 
 2.34.1
-
