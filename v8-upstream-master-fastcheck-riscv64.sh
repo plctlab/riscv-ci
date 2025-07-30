@@ -50,9 +50,9 @@ run_all_sim_build_checks () {
     is_debug=true
     target_cpu="x64"
     v8_target_cpu="riscv64"
-    use_goma=false
-    goma_dir="None"' && \
+    v8_enable_disassembler =true' && \
   ninja -C out/riscv64.sim.debug -j 16 || exit 3
+  out/riscv64.sim.debug/d8 --print-all-code dummy.js 2>&1 |tee "btcode.debug.log"
   run_sim_test out/riscv64.sim.debug # 2>&1 | tee "$LOG_FILE.sim.debug"
   run_sim_test out/riscv64.sim.debug stress # 2>&1 | tee "$LOG_FILE.sim.debug.stress"
   #run_sim_test out/riscv64.sim.debug jitless
@@ -63,12 +63,11 @@ run_all_sim_build_checks () {
     is_debug=false
     target_cpu="x64"
     v8_target_cpu="riscv64"
-    use_goma=false
-    goma_dir="None"' && \
+    v8_enable_disassembler =true' && \
   ninja -C out/riscv64.sim.release -j 16 || exit 4
   # try to get bt size
-  out/riscv64.sim.release/d8 --print-all-code dummy.js 2>&1 |tee "btcode.log"
-  # show all the env 
+  out/riscv64.sim.release/d8 --print-all-code dummy.js 2>&1 |tee "btcode.release.log"
+  # show all the env
   env
   run_sim_test out/riscv64.sim.release # 2>&1 | tee "$LOG_FILE.sim.release"
   run_sim_test out/riscv64.sim.release stress # 2>&1 | tee "$LOG_FILE.sim.release.stress"
