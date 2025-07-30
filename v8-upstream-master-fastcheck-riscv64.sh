@@ -66,6 +66,10 @@ run_all_sim_build_checks () {
     use_goma=false
     goma_dir="None"' && \
   ninja -C out/riscv64.sim.release -j 16 || exit 4
+  # try to get bt size
+  out/riscv64.sim.release/d8 --print-all-code dummy.js 2>&1 |tee "btcode.log"
+  # show all the env 
+  env
   run_sim_test out/riscv64.sim.release # 2>&1 | tee "$LOG_FILE.sim.release"
   run_sim_test out/riscv64.sim.release stress # 2>&1 | tee "$LOG_FILE.sim.release.stress"
   #run_sim_test out/riscv64.sim.release jitless
