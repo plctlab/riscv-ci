@@ -17,7 +17,7 @@ tar zxvf riscv64-glibc-ubuntu-22.04-gcc-nightly-2024.04.12-nightly.tar.gz
 prepare_qemu () {
 mkdir -p "$BASE_DIR/install-qemu"
 
-git clone git@github.com:qemu/qemu.git
+git clone https://github.com/qemu/qemu.git
 
 cd qemu
 
