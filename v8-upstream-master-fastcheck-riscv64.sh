@@ -42,6 +42,18 @@ run_sim_test () {
   python3 ./tools/run-tests.py $ARGS # 2>&1 | tee "$LOG_FILE.simbuild.$BTYPE.${t}${SUFFIX}"
 }
 
+run_benchmark() {
+   qemu-riscv64 -h
+   ls -l  /usr/local
+   ls -l  /usr/local/bin
+   ls -l  /usr/local/bin/plugin
+   ls -l  /usr/local/riscv
+# run with proper cmd line
+   cd "$V8_ROOT/v8"
+   qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.sim.release/d8 ./test/benchmarks/data/sunspider/3d-cube.js
+}
+
+
 run_all_sim_build_checks () {
   cd "$V8_ROOT/v8"
   # build simulator config
@@ -80,6 +92,7 @@ git log -1
 
 #run_x86_build_checks
 run_all_sim_build_checks
+run_benchmark
 # build_cross_builds
 # run_on_qemu
 
