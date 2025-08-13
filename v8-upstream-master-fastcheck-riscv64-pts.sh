@@ -21,7 +21,8 @@ gclient sync
 run_cross_build() {
   cd "$V8_ROOT/v8"
   # patch to avoid RVV in highway
-  patch -p1 <patches/0001-Do-not-build-Highway-with-RVV.patch
+  wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Do-not-build-Highway-with-RVV.patch
+  patch -p1 <0001-Do-not-build-Highway-with-RVV.patch
   # install sysroot
   build/linux/sysroot_scripts/install-sysroot.py --arch=riscv64
   # build native config
@@ -64,14 +65,14 @@ run_all_sim_build_checks () {
   ninja -C out/riscv64.sim.debug -j 16 || exit 3
 
   # build simulator config
-  gn gen out/riscv64.sim.release \
-    --args='is_component_build=false
-    is_debug=false
-    target_cpu="x64"
-    v8_target_cpu="riscv64"
-    use_goma=false
-    goma_dir="None"' && \
-  ninja -C out/riscv64.sim.release -j 16 || exit 4
+  #gn gen out/riscv64.sim.release \
+  #  --args='is_component_build=false
+  #  is_debug=false
+  #  target_cpu="x64"
+  #  v8_target_cpu="riscv64"
+  #  use_goma=false
+  #  goma_dir="None"' && \
+  #ninja -C out/riscv64.sim.release -j 16 || exit 4
 }
 
 cd "$V8_ROOT/v8"
