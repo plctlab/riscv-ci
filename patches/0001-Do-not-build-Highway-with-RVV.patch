@@ -1,0 +1,26 @@
+From 8692e27e47a87fd3589382e91006e79cbecfbfe1 Mon Sep 17 00:00:00 2001
+From: JiQiu <qiuji@iscas.ac.cn>
+Date: Mon, 11 Aug 2025 11:09:20 +0800
+Subject: [PATCH] Do not build Highway with RVV
+
+---
+ third_party/highway/BUILD.gn | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/third_party/highway/BUILD.gn b/third_party/highway/BUILD.gn
+index 16bc7fec41f..8176a176c84 100644
+--- a/third_party/highway/BUILD.gn
++++ b/third_party/highway/BUILD.gn
+@@ -29,6 +29,9 @@ config("libhwy_external_config") {
+     # Start using `-march=z14 -mzvector` once ready.
+     defines += [ "HWY_BROKEN_EMU128=0" ]
+   }
++  if (target_cpu == "riscv64") {
++    defines += [ "HWY_BROKEN_TARGETS=HWY_RVV" ]
++  }
+   if (current_os == "aix") {
+     # enable emulation until highway aix support is ready.
+     defines += [ "HWY_BROKEN_EMU128=0" ]
+-- 
+2.34.1
+

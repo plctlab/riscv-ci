@@ -20,30 +20,10 @@ gclient sync
 
 run_cross_build() {
   cd "$V8_ROOT/v8"
-  PATCH_CONTENT=$(cat << 'EOF'
-  diff --git a/third_party/highway/BUILD.gn b/third_party/highway/BUILD.gn
-  --- a/third_party/highway/BUILD.gn
-  +++ b/third_party/highway/BUILD.gn
-  @@ -29,6 +29,9 @@ config("libhwy_external_config") {
-       # Start using `-march=z14 -mzvector` once ready.
-       defines += [ "HWY_BROKEN_EMU128=0" ]
-     }
-  +  if (target_cpu == "riscv64") {
-  +    defines += [ "HWY_BROKEN_TARGETS=HWY_RVV" ]
-  +  }
-     if (current_os == "aix") {
-       # enable emulation until highway aix support is ready.
-       defines += [ "HWY_BROKEN_EMU128=0" ]
-  -- 
-  EOF
-  )
-  echo "Patching to disable RVV in highway"
-  if echo "$PATCH_CONTENT" | patch -p1; then
-    echo "Patching succeed!"
-  else
-    echo "Patching failed!"
-    exit 1
-  fi
+  # patch to avoid RVV in highway
+  patch -p1 <patches/0001-Do-not-build-Highway-with-RVV.patch
+  # install sysroot
+  build/linux/sysroot_scripts/install-sysroot.py --arch=riscv64
   # build native config
   gn gen out/riscv64.native.release \
       --args='is_component_build=false
