@@ -41,7 +41,7 @@ if [ -d "mozilla-unified" ];then
    cd mozilla-unified
    hg pull
 else
-   curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O 
+   curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -L -O 
    python3 bootstrap.py  --application-choice=js --no-interactive --no-system-changes
    cd mozilla-unified
 fi
