@@ -32,21 +32,19 @@ ac_add_options --enable-jit" > mozconfig
 
 export MOZCONFIG=$PWD/mozconfig
 
-python3 -m pip install --user mercurial
-export PATH="$(python3 -m site --user-base)/bin:$PATH"
-hg version
+git --version
 
-rm -rf ./mozilla-unified
-if [ -d "mozilla-unified" ];then
-   cd mozilla-unified
-   hg pull
+rm -rf ./firefox
+if [ -d 'firefox' ]; then
+   cd firefox
+   git pull
 else
    curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -L -O 
    python3 bootstrap.py  --application-choice=js --no-interactive --no-system-changes
-   cd mozilla-unified
+   cd firefox
 fi
 
-hg log -l 1
+git log HEAD~1..HEAD
 
 rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
