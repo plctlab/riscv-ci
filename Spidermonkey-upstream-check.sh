@@ -52,7 +52,6 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
 ./mach jstests  --format automation
 
-## skip --spectre-mitigations=on case
-./mach jittest -t 400 -x ion/bug1433496.js --format automation
-./mach jittest --ion -t 800 -x ion/bug1433496.js --format automation
+./mach jittest -t 400 --format automation
+./mach jittest --ion -t 800 --format automation
 ./mach jsapi-tests
