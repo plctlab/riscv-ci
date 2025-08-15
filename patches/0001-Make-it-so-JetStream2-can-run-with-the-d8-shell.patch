@@ -1,0 +1,100 @@
+From dd9cc2dd79df055b48d6f7867e199ea1c5b5d813 Mon Sep 17 00:00:00 2001
+From: JiQiu <qiuji@iscas.ac.cn>
+Date: Thu, 14 Aug 2025 22:15:38 +0800
+Subject: [PATCH] Make it so JetStream2 can run with the d8 shell
+
+Ref to: https://bugs.webkit.org/show_bug.cgi?id=213856
+---
+ JetStreamDriver.js | 17 +++++++++++++++--
+ cli.js             |  4 ++++
+ index.html         |  1 +
+ pts-jetstream.js   |  8 ++++++++
+ 4 files changed, 28 insertions(+), 2 deletions(-)
+ create mode 100644 pts-jetstream.js
+
+diff --git a/JetStreamDriver.js b/JetStreamDriver.js
+index c228f0c..d8a96a3 100644
+--- a/JetStreamDriver.js
++++ b/JetStreamDriver.js
+@@ -211,7 +211,18 @@ class Driver {
+     {
+         if (!isInBrowser) {
+             let scripts = string;
+-            let globalObject = runString("");
++            let globalObject;
++            let realm;
++            if (isD8) {
++                realm = Realm.createAllowCrossRealmAccess();
++                globalObject = Realm.global(realm);
++                globalObject.loadString = function(s) {
++                    return Realm.eval(realm, s);
++                };
++                globalObject.readFile = read;
++            } else
++                globalObject = runString("");
++
+             globalObject.console = {log:globalObject.print}
+             globalObject.top = {
+                 currentResolve,
+@@ -219,7 +230,7 @@ class Driver {
+             };
+             for (let script of scripts)
+                 globalObject.loadString(script);
+-            return globalObject;
++            return isD8 ? realm : globalObject;
+         }
+ 
+         var magic = document.getElementById("magic");
+@@ -494,6 +505,8 @@ class Benchmark {
+         this.processResults(results);
+         if (isInBrowser)
+             magicFrame.contentDocument.close();
++        else if (isD8)
++            Realm.dispose(magicFrame);
+     }
+ 
+     fetchResources() {
+diff --git a/cli.js b/cli.js
+index e3b98db..df7676a 100644
+--- a/cli.js
++++ b/cli.js
+@@ -28,6 +28,10 @@ console = {
+     log: print
+ }
+ 
++const isD8 = typeof Realm !== "undefined";
++if (isD8)
++    readFile = read;
++
+ if (typeof testList === "undefined")
+     testList = undefined;
+ 
+diff --git a/index.html b/index.html
+index be216c4..5ab9d13 100644
+--- a/index.html
++++ b/index.html
+@@ -34,6 +34,7 @@
+ 
+     <script>
+     const isInBrowser = true;
++    const isD8 = false;
+     var allIsGood = true;
+     window.onerror = function() { allIsGood = false; }
+ 
+diff --git a/pts-jetstream.js b/pts-jetstream.js
+new file mode 100644
+index 0000000..de296bc
+--- /dev/null
++++ b/pts-jetstream.js
+@@ -0,0 +1,8 @@
++print("<1>",arguments.length);
++
++customTestList=[];
++for (let i = 0; i < arguments.length; i++) {
++  print(`Running ${i}: ${arguments[i]}`);
++  customTestList.push(arguments[i]);
++  }
++
+-- 
+2.34.1
+
