@@ -29,8 +29,8 @@ cd "$V8_ROOT/v8" && ls -al .
 run_cross_build() {
   cd "$V8_ROOT/v8"
   # patch to avoid RVV in highway
-  wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Do-not-build-Highway-with-RVV.patch
-  patch -p1 <0001-Do-not-build-Highway-with-RVV.patch
+  #wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Do-not-build-Highway-with-RVV.patch
+  #patch -p1 <0001-Do-not-build-Highway-with-RVV.patch
   # install sysroot
   build/linux/sysroot_scripts/install-sysroot.py --arch=riscv64
   # build native config
