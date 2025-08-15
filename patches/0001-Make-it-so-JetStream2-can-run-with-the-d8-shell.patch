@@ -1,19 +1,19 @@
-From dd9cc2dd79df055b48d6f7867e199ea1c5b5d813 Mon Sep 17 00:00:00 2001
+From ee457dd4ad5a5875395180e406a20915ad69314d Mon Sep 17 00:00:00 2001
 From: JiQiu <qiuji@iscas.ac.cn>
-Date: Thu, 14 Aug 2025 22:15:38 +0800
+Date: Fri, 15 Aug 2025 20:29:35 +0800
 Subject: [PATCH] Make it so JetStream2 can run with the d8 shell
 
 Ref to: https://bugs.webkit.org/show_bug.cgi?id=213856
 ---
- JetStreamDriver.js | 17 +++++++++++++++--
+ JetStreamDriver.js | 19 +++++++++++++++++--
  cli.js             |  4 ++++
  index.html         |  1 +
  pts-jetstream.js   |  8 ++++++++
- 4 files changed, 28 insertions(+), 2 deletions(-)
+ 4 files changed, 30 insertions(+), 2 deletions(-)
  create mode 100644 pts-jetstream.js
 
 diff --git a/JetStreamDriver.js b/JetStreamDriver.js
-index c228f0c..d8a96a3 100644
+index c228f0c..f35d7db 100644
 --- a/JetStreamDriver.js
 +++ b/JetStreamDriver.js
 @@ -211,7 +211,18 @@ class Driver {
@@ -54,6 +54,15 @@ index c228f0c..d8a96a3 100644
      }
  
      fetchResources() {
+@@ -1560,6 +1573,8 @@ if (false) {
+ 
+ if (typeof testList !== "undefined") {
+     processTestList(testList);
++} else if (customTestList.length) {
++    processTestList(customTestList);
+ } else {
+     if (runARES)
+         addTestsByGroup(ARESGroup);
 diff --git a/cli.js b/cli.js
 index e3b98db..df7676a 100644
 --- a/cli.js
