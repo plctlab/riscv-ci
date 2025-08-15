@@ -18,7 +18,7 @@ rm -rf $V8_ROOT
 gclient sync
 
 # JetStream2.0
-git clone -b JetStream2.0 --single-branch  git@github.com:WebKit/JetStream.git
+git clone -b JetStream2.0 --single-branch  https://github.com/WebKit/JetStream.git
 cd JetStream
 wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Make-it-so-JetStream2-can-run-with-the-d8-shell.patch
 patch -p1 <0001-Make-it-so-JetStream2-can-run-with-the-d8-shell.patch
