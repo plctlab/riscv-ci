@@ -49,7 +49,7 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
 ./mach build
 
-./mach jstests --format automation
+./mach jstests -t 400 --format automation
 
 ./mach jit-test -- -t 400 --format automation
 ./mach jit-test -- --ion -t 800 --format automation --no-progress
