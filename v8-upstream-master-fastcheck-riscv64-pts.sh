@@ -46,7 +46,7 @@ run_cross_build() {
       dcheck_always_on = false
       is_clang = true
       treat_warnings_as_errors = false' && \
-  ninja -C out/riscv64.native.release -j 16 || exit 3
+  ninja -C out/riscv64.native.release -j 16 || exit 4
 }
 
 run_native_benchmark() {
@@ -57,7 +57,16 @@ run_native_benchmark() {
   ls -l  /usr/local/riscv
 # run with proper cmd line
   cd "$V8_ROOT/v8"
-  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 ./test/benchmarks/data/sunspider/3d-cube.js || exit 4
+  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 ./test/benchmarks/data/sunspider/3d-cube.js || exit 5
+}
+
+run_Sunspider() {
+cd "$V8_ROOT/v8/"
+
+for file in test/benchmarks/data/sunspider/*.js; do
+  echo "Running $(basename "$file")"
+  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" || exit 6
+done
 }
 
 run_JetStream() {
@@ -133,8 +142,10 @@ declare -a data=(
     prefix=$(echo "$prefix" | xargs)
     echo "Running  Group: $prefix Name: $suffix"
 
-    qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ../out/riscv64.native.release/d8 ./pts-jetstream.js ./cli.js -- $suffix || exit 5
-   done
+    #qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ../out/riscv64.native.release/d8 ./pts-jetstream.js ./cli.js -- $suffix || exit 7
+    #just run without insn plugin
+    qemu-riscv64 -L /usr/local/riscv/sysroot ../out/riscv64.native.release/d8 ./pts-jetstream.js ./cli.js -- $suffix || exit 7
+  done
 }
 
 run_all_sim_build_checks () {
@@ -148,16 +159,6 @@ run_all_sim_build_checks () {
     use_goma=false
     goma_dir="None"' && \
   ninja -C out/riscv64.sim.release -j 16 || exit 3
-
-  # build simulator config
-  #gn gen out/riscv64.sim.release \
-  #  --args='is_component_build=false
-  #  is_debug=false
-  #  target_cpu="x64"
-  #  v8_target_cpu="riscv64"
-  #  use_goma=false
-  #  goma_dir="None"' && \
-  #ninja -C out/riscv64.sim.release -j 16 || exit 4
 }
 
 cd "$V8_ROOT/v8"
@@ -168,3 +169,4 @@ run_all_sim_build_checks
 run_cross_build
 run_native_benchmark
 run_JetStream
+run_Sunspider
