@@ -69,19 +69,25 @@ run_get_builtinsize() {
   ls -l  /usr/local/bin/plugin
   ls -l  /usr/local/riscv
   cd "$V8_ROOT/v8"
-  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  || exit 3
+  qemu-riscv64 -L /usr/local/riscv/sysroot ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt || exit 3
+  ls -l .
+  wc -l logbtsize-now.txt
 }
 
-#run_native_benchmark() {
-#  qemu-riscv64 -h
-#  ls -l  /usr/local
-#  ls -l  /usr/local/bin
-#  ls -l  /usr/local/bin/plugin
-#  ls -l  /usr/local/riscv
-## run with proper cmd line
-#  cd "$V8_ROOT/v8"
-#  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 ./test/benchmarks/data/sunspider/3d-cube.js || exit 5
-#}
+run_get_lastSuccessfulBuild_info() {
+  cd "$V8_ROOT/v8"
+# get the lastSuccessfulBuild number
+  BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
+# get the builtin size info from lastSuccessfulBuild
+  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/log/" >lastSuccessfulBuild.log
+}
+
+run_cmp_builtinsize() {
+  cd "$V8_ROOT/v8"
+  grep "Builtin," lastSuccessfulBuild.log >logbtsize-lsb.txt
+  echo "CMP builtin size"
+  comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
+}
 
 run_Sunspider() {
 cd "$V8_ROOT/v8/"
@@ -178,5 +184,7 @@ git log -1
 run_sim_build
 run_cross_build
 run_get_builtinsize
+run_get_lastSuccessfulBuild_info
+run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
