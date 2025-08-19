@@ -93,9 +93,14 @@ run_Sunspider() {
 cd "$V8_ROOT/v8/"
 
 for file in test/benchmarks/data/sunspider/*.js; do
-  echo "Running $(basename "$file")"
-  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" || exit 4
+  echo "Benchmarking $(basename "$file")" 2>&1 | tee -a ss-benchmark.log
+  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark.log
 done
+  grep -E "^(Running|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
+  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
+  cat ss-result-lsb.txt
+  cat ss-result-now.txt
+  #comm -12 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
 }
 
 run_JetStream() {
