@@ -85,8 +85,11 @@ run_get_lastSuccessfulBuild_info() {
 run_cmp_builtinsize() {
   cd "$V8_ROOT/v8"
   grep "Builtin," lastSuccessfulBuild.log >logbtsize-lsb.txt
+  wc -l logbtsize-lsb.txt
   echo "CMP builtin size"
   comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
+  echo "DIFF builtin size"
+  diff logbtsize-lsb.txt logbtsize-now.txt
 }
 
 run_Sunspider() {
@@ -96,7 +99,7 @@ for file in test/benchmarks/data/sunspider/*.js; do
   echo "Benchmarking $(basename "$file")" 2>&1 | tee -a ss-benchmark.log
   qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark.log
 done
-  grep -E "^(Running|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
+  grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
   grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
   echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
