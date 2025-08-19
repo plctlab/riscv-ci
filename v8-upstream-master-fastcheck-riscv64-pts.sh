@@ -79,7 +79,7 @@ run_get_lastSuccessfulBuild_info() {
 # get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
 # get the builtin size info from lastSuccessfulBuild
-  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/log/" >lastSuccessfulBuild.log
+  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/log/" |tr -d '\r'  >lastSuccessfulBuild.log
 }
 
 run_cmp_builtinsize() {
@@ -98,9 +98,12 @@ for file in test/benchmarks/data/sunspider/*.js; do
 done
   grep -E "^(Running|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
   grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
+  echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
+  echo "Sunspider current build result: "
   cat ss-result-now.txt
-  #comm -12 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
+  echo "Sunspider diff: "
+  comm -12 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
 }
 
 run_JetStream() {
@@ -186,7 +189,7 @@ cd "$V8_ROOT/v8"
 
 git log -1
 
-run_sim_build
+#run_sim_build
 run_cross_build
 run_get_builtinsize
 run_get_lastSuccessfulBuild_info
