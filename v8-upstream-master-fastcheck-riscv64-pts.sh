@@ -43,9 +43,6 @@ run_sim_build () {
 
 run_cross_build() {
   cd "$V8_ROOT/v8"
-  # patch to avoid RVV in highway
-  #wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Do-not-build-Highway-with-RVV.patch
-  #patch -p1 <0001-Do-not-build-Highway-with-RVV.patch
   # install sysroot
   build/linux/sysroot_scripts/install-sysroot.py --arch=riscv64
   # build native config
@@ -80,12 +77,12 @@ run_get_lastSuccessfulBuild_info() {
 # get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
 # get the builtin size info from lastSuccessfulBuild
-  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/log/" |tr -d '\r'  >lastSuccessfulBuild.log
+  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/consoleFull" |tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log
 }
 
 run_cmp_builtinsize() {
   cd "$V8_ROOT/v8"
-  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log >logbtsize-lsb.txt
+  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log 2>&1 |tee logbtsize-lsb.txt
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
   echo "CMP builtin size"
@@ -95,12 +92,15 @@ run_cmp_builtinsize() {
 }
 
 run_Sunspider() {
-cd "$V8_ROOT/v8/"
+  cd "$V8_ROOT/v8/"
+  for file in test/benchmarks/data/sunspider/*.js; do
+    echo "Benchmarking $(basename "$file")" 2>&1 | tee -a ss-benchmark.log
+    qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark.log
+  done
+}
 
-for file in test/benchmarks/data/sunspider/*.js; do
-  echo "Benchmarking $(basename "$file")" 2>&1 | tee -a ss-benchmark.log
-  qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark.log
-done
+run_cmp_Sunspider() {
+  cd "$V8_ROOT/v8/"
   grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
   grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
   echo "Sunspider lastSuccessfulBuild result: "
@@ -201,3 +201,4 @@ run_get_lastSuccessfulBuild_info
 run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
+run_cmp_Sunspider
