@@ -4,6 +4,8 @@ set -e
 
 V8_ROOT=$PWD/v8-riscv
 
+echo $PWD
+
 [ -d depot_tools ] || git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 
 export PATH="$PWD/depot_tools:/opt/riscv/bin/:$PATH"
@@ -71,7 +73,6 @@ run_get_builtinsize() {
   cd "$V8_ROOT/v8"
   qemu-riscv64 -L /usr/local/riscv/sysroot ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt || exit 3
   ls -l .
-  wc -l logbtsize-now.txt
 }
 
 run_get_lastSuccessfulBuild_info() {
@@ -84,8 +85,9 @@ run_get_lastSuccessfulBuild_info() {
 
 run_cmp_builtinsize() {
   cd "$V8_ROOT/v8"
-  grep "Builtin," lastSuccessfulBuild.log >logbtsize-lsb.txt
+  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log >logbtsize-lsb.txt
   wc -l logbtsize-lsb.txt
+  wc -l logbtsize-now.txt
   echo "CMP builtin size"
   comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
   echo "DIFF builtin size"
