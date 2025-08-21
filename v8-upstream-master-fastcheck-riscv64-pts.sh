@@ -76,7 +76,9 @@ run_get_lastSuccessfulBuild_info() {
   cd "$V8_ROOT/v8"
 # get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
-  curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log
+  curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log >/dev/null
+  wc -l lastSuccessfulBuild.log
+ echo "run_get_lastSuccessfulBuild_info $BUILD_NUMBER $BUILD_ID $WORKSPACE Done"
 }
 
 run_cmp_builtinsize() {
@@ -86,8 +88,8 @@ run_cmp_builtinsize() {
   wc -l logbtsize-now.txt
   echo "CMP builtin size"
   comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
-  echo "DIFF builtin size"
-  diff logbtsize-lsb.txt logbtsize-now.txt
+#  echo "DIFF builtin size"
+#  diff logbtsize-lsb.txt logbtsize-now.txt
 }
 
 run_Sunspider() {
