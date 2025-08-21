@@ -76,8 +76,7 @@ run_get_lastSuccessfulBuild_info() {
   cd "$V8_ROOT/v8"
 # get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
-# get the builtin size info from lastSuccessfulBuild
-  curl -s "https://ci.rvperf.org/blue/rest/organizations/jenkins/pipelines/v8-upstream-master-fastcheck-riscv64-pts/runs/$BUILD_NUM/consoleFull" |tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log
+  curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log
 }
 
 run_cmp_builtinsize() {
