@@ -52,7 +52,11 @@ RISCV64_RELEASE_SIM_CONFIG = f"""
 def exec(arguments, cwd=CWD, check=True):
     if cwd != CWD: print("+ " + "cd " + cwd)
     print("+ " + " ".join([f"'{x}'" if " " in x else x for x in arguments]))
-    subprocess.run(arguments, cwd=cwd, check=check)
+    # Extend the PATH of the subprocess, so the correct depot_tools are used.
+    # This is necessary at least when calling out to tools/run-tests.py.
+    env = dict(os.environ)
+    env["PATH"] = DEPOT_TOOLS_DIR + os.pathsep + env["PATH"]
+    subprocess.run(arguments, cwd=cwd, check=check, env=env)
     if cwd != CWD: print("+ " + "cd " + CWD)
 
 def fetch_depot_tools():
@@ -72,7 +76,7 @@ def fetch_v8(root, clean=False):
         # version of it and make sure to change to the main branch.
         exec([FETCH_PATH, "v8"], cwd=root)
         exec(["git", "checkout", "main"], cwd=v8)
-    subprocess.run([GCLIENT_PATH, "sync"], cwd=root)
+    subprocess.run([GCLIENT_PATH, "sync"], cwd=v8)
 
 def build_v8(root, variant, config):
     v8 = os.path.join(root, "v8")
