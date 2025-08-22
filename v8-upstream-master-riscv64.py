@@ -104,7 +104,7 @@ def run_tests_all(root, variant):
 
 if __name__ == "__main__":
     fetch_depot_tools()
-    fetch_v8(V8_ROOT_DIR)
+    fetch_v8(V8_ROOT_DIR, clean=True)
 
     build_v8(V8_ROOT_DIR, "riscv64.optdebug.sim", RISCV64_OPTDEBUG_SIM_CONFIG)
     build_v8(V8_ROOT_DIR, "riscv64.release.sim", RISCV64_RELEASE_SIM_CONFIG)
