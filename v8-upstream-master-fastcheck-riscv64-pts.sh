@@ -68,8 +68,8 @@ run_get_builtinsize() {
   ls -l  /usr/local/bin/plugin
   ls -l  /usr/local/riscv
   cd "$V8_ROOT/v8"
-  qemu-riscv64 -L /usr/local/riscv/sysroot ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt || exit 3
-  ls -l .
+  qemu-riscv64 -L /usr/local/riscv/sysroot ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt
+  wc -l logbtsize-now.txt
 }
 
 run_get_lastSuccessfulBuild_info() {
@@ -78,12 +78,12 @@ run_get_lastSuccessfulBuild_info() {
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
   curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log >/dev/null
   wc -l lastSuccessfulBuild.log
- echo "run_get_lastSuccessfulBuild_info $BUILD_NUMBER $BUILD_ID $WORKSPACE Done"
+  echo "run_get_lastSuccessfulBuild_info $BUILD_NUMBER $BUILD_ID $WORKSPACE Done"
 }
 
 run_cmp_builtinsize() {
   cd "$V8_ROOT/v8"
-  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log 2>&1 |tee logbtsize-lsb.txt
+  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log 2>&1 |tee logbtsize-lsb.txt >/dev/null
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
   echo "CMP builtin size"
@@ -94,22 +94,31 @@ run_cmp_builtinsize() {
 
 run_Sunspider() {
   cd "$V8_ROOT/v8/"
-  for file in test/benchmarks/data/sunspider/*.js; do
-    echo "Benchmarking $(basename "$file")" 2>&1 | tee -a ss-benchmark.log
-    qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark.log
+  for i in {1..3}; do
+    for file in test/benchmarks/data/sunspider/*.js; do
+      echo "Running $(basename "$file")" 2>&1 | tee -a ss-benchmark-${i}.log
+      qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark-${i}.log
+    done
   done
+  for i in {1..3}; do
+  grep -E "^(Running|total insn)" ss-benchmark-${i}.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-${i}.log
+  done
+  awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("Benchmarking %s\ntotal insn %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log
+  awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("%s %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log >ss-result-now.txt
+  ls -al ss-result*
+  wc -l ss-result*
 }
 
 run_cmp_Sunspider() {
   cd "$V8_ROOT/v8/"
   grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
-  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
+#  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
   echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
   echo "Sunspider current build result: "
   cat ss-result-now.txt
   echo "Sunspider diff: "
-  comm -12 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
+  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
 }
 
 run_JetStream() {
