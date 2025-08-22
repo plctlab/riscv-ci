@@ -51,7 +51,8 @@ RISCV64_RELEASE_SIM_CONFIG = f"""
 # useful information about the working directory.
 def exec(arguments, cwd=CWD, check=True):
     if cwd != CWD: print("+ " + "cd " + cwd)
-    print("+ " + " ".join([f"'{x}'" if " " in x else x for x in arguments]))
+    commandline = " ".join([f"'{x}'" if " " in x else x for x in arguments])
+    print(f"+ {commandline}", flush=True)
     # Extend the PATH of the subprocess, so the correct depot_tools are used.
     # This is necessary at least when calling out to tools/run-tests.py.
     env = dict(os.environ)
