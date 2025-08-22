@@ -76,7 +76,7 @@ def fetch_v8(root, clean=False):
         # version of it and make sure to change to the main branch.
         exec([FETCH_PATH, "v8"], cwd=root)
         exec(["git", "checkout", "main"], cwd=v8)
-    subprocess.run([GCLIENT_PATH, "sync"], cwd=v8)
+    exec([GCLIENT_PATH, "sync"], cwd=v8)
 
 def build_v8(root, variant, config):
     v8 = os.path.join(root, "v8")
