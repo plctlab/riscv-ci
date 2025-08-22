@@ -1,7 +1,10 @@
 import os
 import platform
 
-TARGET_CPU_MAPPING = { "x86_64": "x64", "xxx": "x86" }
+# TODO(kasperl@rivosinc.com): The mapping needs to distinguish between 32-bit
+# and 64-bit builds. For now, we just hardcode the riscv32 builds to use x86
+# as the target cpu when defining the variants below.
+TARGET_CPU_MAPPING = { "x86_64": "x64" }
 TARGET_CPU = TARGET_CPU_MAPPING.get(platform.machine(), platform.machine())
 
 class Variant:
