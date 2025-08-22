@@ -2,6 +2,10 @@
 
 set -e
 
+# TODO(kasperl@rivosinc.com): Figure out what the bots think their machine
+# is to help the transition to Python.
+python3 -c "import platform; print(platform.machine())"
+
 V8_ROOT=$PWD/v8-riscv
 #RV_HOME=/opt/riscv
 QEMU_ADDR=riscv@localhost
@@ -83,4 +87,3 @@ git log -1
 run_all_sim_build_checks
 # build_cross_builds
 # run_on_qemu
-

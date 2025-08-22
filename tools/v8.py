@@ -1,5 +1,4 @@
 import os
-import platform
 import shutil
 import subprocess
 import sys
@@ -18,30 +17,6 @@ FETCH_PATH     = os.path.join(DEPOT_TOOLS_DIR, "fetch")
 GCLIENT_PATH   = os.path.join(DEPOT_TOOLS_DIR, "gclient")
 GN_PATH        = os.path.join(DEPOT_TOOLS_DIR, "gn")
 AUTONINJA_PATH = os.path.join(DEPOT_TOOLS_DIR, "autoninja")
-
-TARGET_CPU_MAPPING = { "x86_64": "x64" }
-TARGET_CPU = TARGET_CPU_MAPPING.get(platform.machine(), platform.machine())
-
-
-#############################################################################
-# Configurations.
-#############################################################################
-RISCV64_OPTDEBUG_SIM_CONFIG = f"""
-  is_component_build=false
-  is_debug=true
-  target_cpu="{TARGET_CPU}"
-  v8_enable_backtrace=true
-  v8_enable_slow_dchecks=true
-  v8_optimized_debug=true
-  v8_target_cpu="riscv64"
-"""
-
-RISCV64_RELEASE_SIM_CONFIG = f"""
-  is_component_build=false
-  is_debug=false
-  target_cpu="{TARGET_CPU}"
-  v8_target_cpu="riscv64"
-"""
 
 
 # Helper function that runs a command given by the arguments in a subprocess.
@@ -62,10 +37,12 @@ def fetch_depot_tools():
     if os.path.isdir(DEPOT_TOOLS_DIR): return
     exec(["git", "clone", DEPOT_TOOLS_URL, DEPOT_TOOLS_DIR])
 
-def fetch_v8(root, clean=False):
-    if clean and os.path.isdir(root): shutil.rmtree(root, ignore_errors=True)
-    if not os.path.isdir(root): os.mkdir(root)
-    v8 = os.path.join(root, "v8")
+def fetch(clean=False):
+    if clean and os.path.isdir(ROOT_DIR):
+        shutil.rmtree(ROOT_DIR, ignore_errors=True)
+    if not os.path.isdir(ROOT_DIR):
+        os.mkdir(ROOT_DIR)
+    v8 = os.path.join(ROOT_DIR, "v8")
     if os.path.isdir(v8):
         # We already have a checked out version of v8, so we assume it is already
         # on the main branch and just pull there.
@@ -73,21 +50,21 @@ def fetch_v8(root, clean=False):
     else:
         # We do not have a checkout of v8 yet, so we use 'fetch' to get the initial
         # version of it and make sure to change to the main branch.
-        exec([FETCH_PATH, "v8"], cwd=root)
+        exec([FETCH_PATH, "v8"], cwd=ROOT_DIR)
         exec(["git", "checkout", "main"], cwd=v8)
     exec([GCLIENT_PATH, "sync"], cwd=v8)
 
-def build_v8(root, variant, config):
-    v8 = os.path.join(root, "v8")
+def build(variant):
+    v8 = os.path.join(ROOT_DIR, "v8")
     exec(["git", "log", "-1"], cwd=v8)
-    outdir = os.path.join("out.gn", variant)
-    args = " ".join([x.strip() for x in config.splitlines() if x != ""])
+    outdir = variant.output_directory()
+    args = variant.gn_generate_args()
     exec([GN_PATH, "gen", outdir, f"--args={args}"], cwd=v8)
     exec([AUTONINJA_PATH, "-C", outdir], cwd=v8)
 
-def run_tests_specific(root, variant, *extra):
-    v8 = os.path.join(root, "v8")
-    outdir = os.path.join("out.gn", variant)
+def run_tests_specific(variant, *extra):
+    v8 = os.path.join(ROOT_DIR, "v8")
+    outdir = variant.output_directory()
     arguments = [
         PYTHON,
         "tools/run-tests.py",
@@ -96,7 +73,11 @@ def run_tests_specific(root, variant, *extra):
     ]
     exec(arguments + list(extra), cwd=v8)
 
-def run_tests_all(root, variant):
-    run_tests_specific(root, variant)
-    run_tests_specific(root, variant, "--variants=stress")
-    # TODO(kasperl@rivosinc.com): Enable --jitless tests again.
+def run_tests(variant, fast=False):
+    # NOTE(2021-08-21): Run 10 times to provoke random bugs unless asked to run
+    # the fast version of the tests. For now, this is the only difference between
+    # the normal runners and the 'fastcheck' variants.
+    iterations = 1 if fast else 10
+    for iteration in range(iterations):
+        run_tests_specific(variant)
+        run_tests_specific(variant, "--variants=stress")
