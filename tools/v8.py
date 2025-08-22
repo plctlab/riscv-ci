@@ -73,11 +73,11 @@ def run_tests_specific(variant, *extra):
     ]
     exec(arguments + list(extra), cwd=v8)
 
-def run_tests(variant, fast=False):
+def run_tests(variant, fast=False, stress=True):
     # NOTE(2021-08-21): Run 10 times to provoke random bugs unless asked to run
     # the fast version of the tests. For now, this is the only difference between
     # the normal runners and the 'fastcheck' variants.
     iterations = 1 if fast else 10
     for iteration in range(iterations):
         run_tests_specific(variant)
-        run_tests_specific(variant, "--variants=stress")
+        if stress: run_tests_specific(variant, "--variants=stress")
