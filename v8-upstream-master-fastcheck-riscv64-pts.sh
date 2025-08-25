@@ -107,18 +107,21 @@ run_Sunspider() {
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("%s %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log >ss-result-now.txt
   ls -al ss-result*
   wc -l ss-result*
+  cat ss-result-now.txt
 }
 
 run_cmp_Sunspider() {
   cd "$V8_ROOT/v8/"
-  grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
+  grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - 2>&1 |tee ss-result-lsb.txt >/dev/null
+  wc -l ss-result-lsb.txt
 #  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
   echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
   echo "Sunspider current build result: "
   cat ss-result-now.txt
   echo "Sunspider diff: "
-  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
+  diff ss-result-lsb.txt ss-result-now.txt
+#  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
 }
 
 run_JetStream() {
@@ -208,7 +211,7 @@ git log -1
 run_cross_build
 run_get_builtinsize
 run_get_lastSuccessfulBuild_info
-#run_cmp_builtinsize
+run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
-#run_cmp_Sunspider
+run_cmp_Sunspider
