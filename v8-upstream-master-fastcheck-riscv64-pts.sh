@@ -86,10 +86,10 @@ run_cmp_builtinsize() {
   grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log 2>&1 |tee logbtsize-lsb.txt >/dev/null
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
-  echo "CMP builtin size"
-  comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
-#  echo "DIFF builtin size"
-#  diff logbtsize-lsb.txt logbtsize-now.txt
+#  echo "CMP builtin size"
+#  comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
+  echo "DIFF builtin size"
+  diff logbtsize-lsb.txt logbtsize-now.txt
 }
 
 run_Sunspider() {
@@ -208,7 +208,7 @@ git log -1
 run_cross_build
 run_get_builtinsize
 run_get_lastSuccessfulBuild_info
-run_cmp_builtinsize
+#run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
-run_cmp_Sunspider
+#run_cmp_Sunspider
