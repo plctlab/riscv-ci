@@ -86,8 +86,6 @@ run_cmp_builtinsize() {
   grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log >logbtsize-lsb.txt 2>&1
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
-#  echo "CMP builtin size"
-#  comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
   echo "DIFF builtin size"
   diff logbtsize-lsb.txt logbtsize-now.txt
 }
@@ -115,7 +113,6 @@ run_cmp_Sunspider() {
   cd "$V8_ROOT/v8/"
   grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - >ss-result-lsb.txt 2>&1
   wc -l ss-result-lsb.txt
-#  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
   echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
   echo "Sunspider current build result: "
@@ -215,4 +212,4 @@ run_get_lastSuccessfulBuild_info
 run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
-#run_cmp_Sunspider
+run_cmp_Sunspider
