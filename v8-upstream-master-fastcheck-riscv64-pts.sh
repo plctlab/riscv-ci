@@ -119,7 +119,7 @@ run_cmp_Sunspider() {
   cat ss-result-now.txt
   echo "Sunspider diff: "
   diff ss-result-lsb.txt ss-result-now.txt || true
-#  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
+  awk '{name[FNR]=$1; score[NR]=$2} END{for(i=1;i<=FNR;i++) printf("%27s lsb:%10d curr:%10d diff:%9d ratio:%6.2f%%\n",name[i],score[i],score[i+FNR],score[i]-score[i+FNR],(score[i]-score[i+FNR])/score[i]*100)}' ss-result-lsb.txt ss-result-now.txt ||true
 }
 
 run_JetStream() {
