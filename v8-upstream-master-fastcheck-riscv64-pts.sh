@@ -87,7 +87,7 @@ run_cmp_builtinsize() {
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
   echo "DIFF builtin size"
-  diff logbtsize-lsb.txt logbtsize-now.txt
+  diff logbtsize-lsb.txt logbtsize-now.txt || true
 }
 
 run_Sunspider() {
@@ -118,7 +118,7 @@ run_cmp_Sunspider() {
   echo "Sunspider current build result: "
   cat ss-result-now.txt
   echo "Sunspider diff: "
-  diff ss-result-lsb.txt ss-result-now.txt
+  diff ss-result-lsb.txt ss-result-now.txt || true
 #  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
 }
 
@@ -213,4 +213,3 @@ run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
 run_cmp_Sunspider
-echo "V8 pts done!"
