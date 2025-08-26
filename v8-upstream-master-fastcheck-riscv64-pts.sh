@@ -213,3 +213,4 @@ run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
 run_cmp_Sunspider
+echo "V8 pts done!"
