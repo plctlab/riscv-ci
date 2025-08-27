@@ -63,7 +63,7 @@ def _exec(arguments, cwd=CWD, check=True, capture_output=False):
     # exit code indicates success.
     retcode = process.wait()
     if check and retcode != 0:
-        raise subprocess.CalledProcessError(arguments[0], retcode)
+        raise subprocess.CalledProcessError(retcode, arguments)
     return output
 
 def fetch_depot_tools():
