@@ -1,25 +1,23 @@
 #!/bin/bash
+git -C riscv-ci pull || git clone https://github.com/plctlab/riscv-ci riscv-ci
+python3 $PWD/riscv-ci/v8-upstream-master-fastcheck-riscv64-pts.py
 
+#############################################################################
+# TODO(kasperl@rivosinc.com): We're keeping the current bash version of the
+# performance tracking system (pts) here, until we've rewritten it completely
+# in Python.
+#############################################################################
+
+# The Python version will make sure we have a properly initialized root
+# directory and it will have fetched the depot_tools.
 set -e
-
 V8_ROOT=$PWD/v8-riscv
-
 echo $PWD
-
-[ -d depot_tools ] || git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-
 export PATH="$PWD/depot_tools:/opt/riscv/bin/:$PATH"
-
-# ref: https://github.com/v8-riscv/v8/wiki/get-the-source
-rm -rf $V8_ROOT
-  mkdir -p $V8_ROOT
-  cd $V8_ROOT
-  fetch v8
-  cd v8
-
-gclient sync
+cd "$V8_ROOT/v8"
 
 # JetStream2.0
+rm -rf JetStream
 git clone -b JetStream2.0 --single-branch  https://github.com/WebKit/JetStream.git
 cd JetStream
 wget  https://raw.githubusercontent.com/plctlab/riscv-ci/main/patches/0001-Make-it-so-JetStream2-can-run-with-the-d8-shell.patch
