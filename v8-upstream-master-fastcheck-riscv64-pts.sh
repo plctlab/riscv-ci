@@ -1,6 +1,6 @@
 #!/bin/bash
 git -C riscv-ci pull || git clone https://github.com/plctlab/riscv-ci riscv-ci
-python3 $PWD/riscv-ci/v8-upstream-master-fastcheck-riscv64-pts.py
+python3 $PWD/riscv-ci/v8-upstream-master-fastcheck-riscv64-pts.py || true
 
 #############################################################################
 # TODO(kasperl@rivosinc.com): We're keeping the current bash version of the
