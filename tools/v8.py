@@ -98,25 +98,29 @@ def build(variant, arguments=[]):
 def build_d8(variant):
     build(variant, ["d8"])
 
-def run_tests_specific(variant, *extra):
+def run_tests_specific(variant, tests, *extra):
     srcdir = os.path.join(ROOT_DIR, "v8")
     outdir = variant.output_directory()
     arguments = [
         PYTHON,
         "tools/run-tests.py",
+        tests,
         "--progress=verbose",
+        "--rerun-failures-count=2",
         f"--outdir={outdir}",
     ]
     _exec(arguments + list(extra), cwd=srcdir)
 
 def run_tests(variant, fast=False, stress=True):
-    # NOTE(2021-08-21): Run 10 times to provoke random bugs unless asked to run
-    # the fast version of the tests. For now, this is the only difference between
-    # the normal runners and the 'fastcheck' variants.
-    iterations = 1 if fast else 10
-    for iteration in range(iterations):
-        run_tests_specific(variant)
-        if stress: run_tests_specific(variant, "--variants=stress")
+    # The 'default' set of tests is slightly smaller than the 'bot default' set.
+    # Unless we're asked to run the tests quickly, we prefer the slightly bigger
+    # set of tests to get better coverage.
+    tests = "default" if fast else "bot_default"
+    # The 'exhaustive' variants include all the 'stress' variants. If we're
+    # asked to avoid the 'stress' variants, we can't use it.
+    variants = "exhaustive" if stress else "future,default"
+    if fast: variants = "stress,default" if stress else "default"
+    run_tests_specific(variant, tests, f"--variants={variants}")
 
 def run_d8(variant, arguments, cwd=CWD):
     srcdir = os.path.join(ROOT_DIR, "v8")
