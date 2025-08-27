@@ -67,7 +67,7 @@ def run_benchmarks(variant, benchmarks):
 
 
 v8.fetch_depot_tools()
-v8.fetch()
+v8.fetch(clean=True)
 v8.build_d8(RISCV64_PTS_RELEASE)
 
 report_builtin_sizes()
