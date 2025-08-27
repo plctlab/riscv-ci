@@ -74,49 +74,50 @@ run_get_lastSuccessfulBuild_info() {
   cd "$V8_ROOT/v8"
 # get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
-  curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  2>&1 |tee lastSuccessfulBuild.log >/dev/null
+  curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  > lastSuccessfulBuild.log 2>&1
   wc -l lastSuccessfulBuild.log
   echo "run_get_lastSuccessfulBuild_info $BUILD_NUMBER $BUILD_ID $WORKSPACE Done"
 }
 
 run_cmp_builtinsize() {
   cd "$V8_ROOT/v8"
-  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log 2>&1 |tee logbtsize-lsb.txt >/dev/null
+  grep -E '^[A-Z]{3} Builtin, ' lastSuccessfulBuild.log >logbtsize-lsb.txt 2>&1
   wc -l logbtsize-lsb.txt
   wc -l logbtsize-now.txt
-#  echo "CMP builtin size"
-#  comm -3 <(sort logbtsize-lsb.txt) <(sort logbtsize-now.txt)
   echo "DIFF builtin size"
-  diff logbtsize-lsb.txt logbtsize-now.txt
+  diff logbtsize-lsb.txt logbtsize-now.txt || true
 }
 
 run_Sunspider() {
   cd "$V8_ROOT/v8/"
   for i in {1..3}; do
     for file in test/benchmarks/data/sunspider/*.js; do
-      echo "Running $(basename "$file")" 2>&1 | tee -a ss-benchmark-${i}.log
-      qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" 2>&1 |tee -a ss-benchmark-${i}.log
+      echo "Running $(basename "$file")" >> ss-benchmark-${i}.log 2>&1
+      qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" >> ss-benchmark-${i}.log 2>&1
     done
   done
   for i in {1..3}; do
   grep -E "^(Running|total insn)" ss-benchmark-${i}.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-${i}.log
   done
+  #This line prints the CI result into the log so that the next CI can use this information for comparison."
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("Benchmarking %s\ntotal insn %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("%s %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log >ss-result-now.txt
   ls -al ss-result*
   wc -l ss-result*
+  cat ss-result-now.txt
 }
 
 run_cmp_Sunspider() {
   cd "$V8_ROOT/v8/"
-  grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-lsb.txt
-#  grep -E "^(Benchmarking|total insn)" ss-benchmark.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-now.txt
+  grep -E "^(Benchmarking|total insn)" lastSuccessfulBuild.log | awk '{print($NF)}' | paste -d ' ' - - >ss-result-lsb.txt 2>&1
+  wc -l ss-result-lsb.txt
   echo "Sunspider lastSuccessfulBuild result: "
   cat ss-result-lsb.txt
   echo "Sunspider current build result: "
   cat ss-result-now.txt
   echo "Sunspider diff: "
-  comm -3 <(sort ss-result-lsb.txt) <(sort ss-result-now.txt)
+  diff ss-result-lsb.txt ss-result-now.txt || true
+  awk '{name[FNR]=$1; score[NR]=$2} END{for(i=1;i<=FNR;i++) printf("%27s lsb:%10d curr:%10d diff:%9d ratio:%6.2f%%\n",name[i],score[i],score[i+FNR],score[i]-score[i+FNR],(score[i]-score[i+FNR])/score[i]*100)}' ss-result-lsb.txt ss-result-now.txt ||true
 }
 
 run_JetStream() {
@@ -206,7 +207,7 @@ git log -1
 run_cross_build
 run_get_builtinsize
 run_get_lastSuccessfulBuild_info
-#run_cmp_builtinsize
+run_cmp_builtinsize
 #run_JetStream
 run_Sunspider
-#run_cmp_Sunspider
+run_cmp_Sunspider
