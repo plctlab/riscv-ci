@@ -18,7 +18,8 @@ GCLIENT_PATH   = os.path.join(DEPOT_TOOLS_DIR, "gclient")
 GN_PATH        = os.path.join(DEPOT_TOOLS_DIR, "gn")
 AUTONINJA_PATH = os.path.join(DEPOT_TOOLS_DIR, "autoninja")
 
-INSTALL_SYSROOT_PATH = os.path.join("build", "linux", "install-sysroot.py")
+INSTALL_SYSROOT_PATH = os.path.join(
+    "build", "linux", "sysroot_scripts", "install-sysroot.py")
 
 # Cache the last working directory in a variable, so we can print something
 # useful whenever we change the working directory.
