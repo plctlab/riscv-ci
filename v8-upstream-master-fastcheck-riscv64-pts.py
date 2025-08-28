@@ -105,11 +105,11 @@ def report_builtin_sizes(last):
     # output of the last run.
     if last is not None: return
     if SECTION_BUILTIN_SIZES in last.sections:
-        print(f"Found section in output for build {last.id}:")
+        print(f"Found section in output for build {last.id}:", flush=True)
         for line in last.sections[SECTION_BUILTIN_SIZES]:
-            print(f">>>>> {line}")
+            print(f">>>>> {line}", flush=True)
     else:
-        print(f"Didn't find section in output for build {last.id}")
+        print(f"Didn't find section in output for build {last.id}", flush=True)
 
 # Gather information about last successful build.
 def last_successful_build():
@@ -121,7 +121,12 @@ def last_successful_build():
         with urlopen(f"{url_base}/lastSuccessfulBuild/buildNumber") as response:
             id = int(response.read().decode('utf-8').strip())
         with urlopen(f"{url_base}/{id}/consoleFull") as response:
-            log = TextIOWrapper(response, encoding="utf-8").readlines()
+            # Create a log with all the lines from the console. Make sure to
+            # remove trailing whitespace (newlines, etc.), so the log gets a
+            # bit easier to work with going forward.
+            log = []
+            for line in TextIOWrapper(response, encoding="utf-8").readlines():
+                log.append(line.rstrip())
         return BuildInformation(JOB, id, log)
     except Exception:
         print(traceback.format_exc())
