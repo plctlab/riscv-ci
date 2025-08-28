@@ -36,13 +36,15 @@ run_get_builtinsize() {
   ls -l  /usr/local/bin/plugin
   ls -l  /usr/local/riscv
   cd "$V8_ROOT/v8"
-  qemu-riscv64 -L /usr/local/riscv/sysroot $D8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt
+  # The Python version already generates the same output, so we just repeat this
+  # to get it dumped into a file so we can diff it against the last successful.
+  qemu-riscv64 -L /usr/local/riscv/sysroot $D8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js > logbtsize-now.txt 2>&1
   wc -l logbtsize-now.txt
 }
 
 run_get_lastSuccessfulBuild_info() {
   cd "$V8_ROOT/v8"
-# get the lastSuccessfulBuild number
+  # Get the lastSuccessfulBuild number
   BUILD_NUM=$(curl -s https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/lastSuccessfulBuild/buildNumber | grep -o '[0-9]*')
   curl -s "https://ci.rvperf.org/view/V8/job/v8-upstream-master-fastcheck-riscv64-pts/$BUILD_NUM/consoleFull" |  tr -d '\r'  > lastSuccessfulBuild.log 2>&1
   wc -l lastSuccessfulBuild.log
@@ -69,7 +71,7 @@ run_Sunspider() {
   for i in {1..3}; do
   grep -E "^(Running|total insn)" ss-benchmark-${i}.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-${i}.log
   done
-  #This line prints the CI result into the log so that the next CI can use this information for comparison."
+  # This line prints the CI result into the log so that the next CI can use this information for comparison.
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("Benchmarking %s\ntotal insn %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("%s %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log >ss-result-now.txt
   ls -al ss-result*
