@@ -143,9 +143,6 @@ def run_benchmarks(variant, benchmarks):
             v8.run_d8(variant, [benchmark], cwd=os.path.join(v8.ROOT_DIR, "v8"))
             # TODO(kasperl@rivosinc.com): Gather statistics and report them.
 
-last = last_successful_build()
-last.print_bash_output()
-exit(0)
 
 v8.fetch_depot_tools()
 v8.fetch()
