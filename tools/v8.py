@@ -63,7 +63,7 @@ def _exec(arguments, cwd=CWD, check=True, echo_output=True, capture_output=False
         output = []
         for line in process.stdout:
             if echo_output: sys.stdout.write(line)
-            output.append(line)
+            output.append(line.rstrip())
     # Wait for the subprocess to terminate and optionally check if the
     # exit code indicates success.
     retcode = process.wait()
