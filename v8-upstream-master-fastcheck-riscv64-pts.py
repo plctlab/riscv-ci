@@ -3,6 +3,8 @@
 import glob
 import os
 import traceback
+
+from io import TextIOWrapper
 from urllib.request import urlopen
 
 import tools.v8 as v8
@@ -29,7 +31,7 @@ RISCV64_PTS_RELEASE = variants.Variant("riscv64.pts.release", f"""
   v8_enable_object_print=true
   v8_enable_verify_heap=true
 """, wrapper=[
-  os.path.join(os.path.sep, "opt", "riscv", "bin", "qemu-riscv64"),
+  "qemu-riscv64",
   "-L",
   os.path.join(os.path.sep, "usr", "local", "riscv", "sysroot")
 ])
@@ -119,7 +121,7 @@ def last_successful_build():
         with urlopen(f"{url_base}/lastSuccessfulBuild/buildNumber") as response:
             id = int(response.read().decode('utf-8').strip())
         with urlopen(f"{url_base}/{id}/consoleFull") as response:
-            log = response.readlines()
+            log = TextIOWrapper(response, encoding="utf-8").readlines()
         return BuildInformation(JOB, id, log)
     except Exception:
         print(traceback.format_exc())
@@ -148,7 +150,7 @@ v8.build_d8(RISCV64_PTS_RELEASE)
 
 last = last_successful_build()
 report_builtin_sizes(last)
-last.print_bash_output()
+if last is not None: last.print_bash_output()
 sunspider = find_sunspider_benchmarks()
 run_benchmarks(RISCV64_PTS_RELEASE, sunspider)
 
