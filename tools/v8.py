@@ -18,6 +18,8 @@ GCLIENT_PATH   = os.path.join(DEPOT_TOOLS_DIR, "gclient")
 GN_PATH        = os.path.join(DEPOT_TOOLS_DIR, "gn")
 AUTONINJA_PATH = os.path.join(DEPOT_TOOLS_DIR, "autoninja")
 
+INSTALL_SYSROOT_PATH = os.path.join("build", "linux", "install-sysroot.py")
+
 # Cache the last working directory in a variable, so we can print something
 # useful whenever we change the working directory.
 _last_cwd = CWD
@@ -89,6 +91,10 @@ def fetch(clean=False):
         _exec(["git", "checkout", "main"], cwd=srcdir)
     _exec([GCLIENT_PATH, "sync"], cwd=srcdir)
 
+def fetch_sysroot(architecture):
+    srcdir = os.path.join(ROOT_DIR, "v8")
+    _exec([PYTHON, INSTALL_SYSROOT_PATH, f"--arch={architecture}"], cwd=srcdir)
+
 def build(variant, arguments=[]):
     srcdir = os.path.join(ROOT_DIR, "v8")
     _exec(["git", "log", "-1"], cwd=srcdir)
@@ -131,5 +137,4 @@ def run_d8(variant, arguments, cwd=CWD, echo_output=True):
         variant.wrapper + [os.path.join(srcdir, outdir, "d8")] + arguments,
         cwd=cwd,
         echo_output=echo_output,
-        capture_output=True
-    )
+        capture_output=True)
