@@ -3,6 +3,8 @@
 import glob
 import os
 import traceback
+
+from io import TextIOWrapper
 from urllib.request import urlopen
 
 import tools.v8 as v8
@@ -119,7 +121,7 @@ def last_successful_build():
         with urlopen(f"{url_base}/lastSuccessfulBuild/buildNumber") as response:
             id = int(response.read().decode('utf-8').strip())
         with urlopen(f"{url_base}/{id}/consoleFull") as response:
-            log = response.readlines()
+            log = TextIOWrapper(response, encoding="utf-8").readlines()
         return BuildInformation(JOB, id, log)
     except Exception:
         print(traceback.format_exc())
@@ -141,6 +143,9 @@ def run_benchmarks(variant, benchmarks):
             v8.run_d8(variant, [benchmark], cwd=os.path.join(v8.ROOT_DIR, "v8"))
             # TODO(kasperl@rivosinc.com): Gather statistics and report them.
 
+last = last_successful_build()
+last.print_bash_output()
+exit(0)
 
 v8.fetch_depot_tools()
 v8.fetch()
@@ -148,7 +153,7 @@ v8.build_d8(RISCV64_PTS_RELEASE)
 
 last = last_successful_build()
 report_builtin_sizes(last)
-last.print_bash_output()
+if last is not None: last.print_bash_output()
 sunspider = find_sunspider_benchmarks()
 run_benchmarks(RISCV64_PTS_RELEASE, sunspider)
 
