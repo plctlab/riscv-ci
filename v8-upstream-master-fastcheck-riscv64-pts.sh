@@ -16,8 +16,6 @@ echo $PWD
 export PATH="$PWD/depot_tools:/opt/riscv/bin/:$PATH"
 cd "$V8_ROOT/v8"
 
-which qemu-riscv64
-
 # JetStream2.0
 rm -rf JetStream
 git clone -b JetStream2.0 --single-branch  https://github.com/WebKit/JetStream.git
