@@ -25,7 +25,7 @@ _last_cwd = CWD
 # Helper function that runs a command given by the arguments in a subprocess.
 # Notice that we default to checking that it runs successfully and we show
 # useful information about the working directory.
-def _exec(arguments, cwd=CWD, check=True, capture_output=False):
+def _exec(arguments, cwd=CWD, check=True, echo_output=True, capture_output=False):
     global _last_cwd
     if cwd != _last_cwd:
         print("+ " + "cd " + cwd, flush=True)
@@ -41,6 +41,9 @@ def _exec(arguments, cwd=CWD, check=True, capture_output=False):
     if capture_output:
         stdout = subprocess.PIPE
         stderr = subprocess.STDOUT
+    elif not echo_output:
+        stdout = subprocess.DEVNULL
+        stderr = subprocess.STDOUT
     # Run the subprocess.
     commandline = " ".join([f"'{x}'" if " " in x else x for x in arguments])
     print(f"+ {commandline}", flush=True)
@@ -50,14 +53,13 @@ def _exec(arguments, cwd=CWD, check=True, capture_output=False):
         env=env,
         stderr=stderr,
         stdout=stdout,
-        text=True
-    )
+        text=True)
     # Capture the output (if necessary) and write it to stdout as we go along.
     output = None
     if capture_output:
         output = []
         for line in process.stdout:
-            sys.stdout.write(line)
+            if echo_output: sys.stdout.write(line)
             output.append(line)
     # Wait for the subprocess to terminate and optionally check if the
     # exit code indicates success.
@@ -122,11 +124,12 @@ def run_tests(variant, fast=False, stress=True):
     if fast: variants = "stress,default" if stress else "default"
     run_tests_specific(variant, tests, f"--variants={variants}")
 
-def run_d8(variant, arguments, cwd=CWD):
+def run_d8(variant, arguments, cwd=CWD, echo_output=True):
     srcdir = os.path.join(ROOT_DIR, "v8")
     outdir = variant.output_directory()
     return _exec(
-        [os.path.join(srcdir, outdir, "d8")] + arguments,
+        variant.wrapper + [os.path.join(srcdir, outdir, "d8")] + arguments,
         cwd=cwd,
+        echo_output=echo_output,
         capture_output=True
     )

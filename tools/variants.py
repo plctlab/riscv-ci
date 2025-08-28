@@ -8,9 +8,10 @@ TARGET_CPU_MAPPING = { "x86_64": "x64" }
 TARGET_CPU = TARGET_CPU_MAPPING.get(platform.machine(), platform.machine())
 
 class Variant:
-    def __init__(self, name, config):
+    def __init__(self, name, config, wrapper=[]):
         self.name = name
         self.config = config
+        self.wrapper = wrapper
 
     def output_directory(self):
         return os.path.join("out.gn", self.name)
