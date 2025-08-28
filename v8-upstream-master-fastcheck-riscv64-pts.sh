@@ -16,6 +16,9 @@ echo $PWD
 export PATH="$PWD/depot_tools:/opt/riscv/bin/:$PATH"
 cd "$V8_ROOT/v8"
 
+# Re-use the binary produced by the Python version to avoid recompiling.
+D8="$V8_ROOT/v8/out.gn/riscv64.pts.release/d8"
+
 # JetStream2.0
 rm -rf JetStream
 git clone -b JetStream2.0 --single-branch  https://github.com/WebKit/JetStream.git
@@ -26,39 +29,6 @@ patch -p1 <0001-Make-it-so-JetStream2-can-run-with-the-d8-shell.patch
 # show directory
 cd "$V8_ROOT/v8" && ls -al .
 
-run_sim_build () {
-  cd "$V8_ROOT/v8"
-  # build simulator config
-  gn gen out/riscv64.sim.release \
-    --args='is_component_build=false
-    is_debug=false
-    target_cpu="x64"
-    v8_target_cpu="riscv64"
-    use_goma=false
-    goma_dir="None"' && \
-  ninja -C out/riscv64.sim.release -j 16 || exit 1
-}
-
-run_cross_build() {
-  cd "$V8_ROOT/v8"
-  # install sysroot
-  build/linux/sysroot_scripts/install-sysroot.py --arch=riscv64
-  # build native config
-  gn gen out/riscv64.native.release \
-      --args='is_component_build=false
-      is_debug=false
-      target_cpu="riscv64"
-      v8_target_cpu="riscv64"
-      v8_enable_backtrace = true
-      v8_enable_disassembler = true
-      v8_enable_object_print = true
-      v8_enable_verify_heap = true
-      dcheck_always_on = false
-      is_clang = true
-      treat_warnings_as_errors = false' && \
-  ninja -C out/riscv64.native.release -j 16 || exit 2
-}
-
 run_get_builtinsize() {
   qemu-riscv64 -h
   ls -l  /usr/local
@@ -66,7 +36,7 @@ run_get_builtinsize() {
   ls -l  /usr/local/bin/plugin
   ls -l  /usr/local/riscv
   cd "$V8_ROOT/v8"
-  qemu-riscv64 -L /usr/local/riscv/sysroot ./out/riscv64.native.release/d8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt
+  qemu-riscv64 -L /usr/local/riscv/sysroot $D8 --print-builtin-size ./test/benchmarks/data/sunspider/3d-cube.js  2>&1 |tee logbtsize-now.txt
   wc -l logbtsize-now.txt
 }
 
@@ -93,7 +63,7 @@ run_Sunspider() {
   for i in {1..3}; do
     for file in test/benchmarks/data/sunspider/*.js; do
       echo "Running $(basename "$file")" >> ss-benchmark-${i}.log 2>&1
-      qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ./out/riscv64.native.release/d8 "$file" >> ss-benchmark-${i}.log 2>&1
+      qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin $D8 "$file" >> ss-benchmark-${i}.log 2>&1
     done
   done
   for i in {1..3}; do
@@ -193,9 +163,9 @@ declare -a data=(
     prefix=$(echo "$prefix" | xargs)
     echo "Running  Group: $prefix Name: $suffix"
 
-    #qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin  ../out/riscv64.native.release/d8 ./pts-jetstream.js ./cli.js -- $suffix || exit 7
+    #qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin $D8 ./pts-jetstream.js ./cli.js -- $suffix || exit 7
     #just run without insn plugin
-    qemu-riscv64 -L /usr/local/riscv/sysroot ../out/riscv64.native.release/d8 ./pts-jetstream.js ./cli.js -- $suffix || exit 5
+    qemu-riscv64 -L /usr/local/riscv/sysroot $D8 ./pts-jetstream.js ./cli.js -- $suffix || exit 5
   done
 }
 
@@ -203,8 +173,6 @@ cd "$V8_ROOT/v8"
 
 git log -1
 
-#run_sim_build
-run_cross_build
 run_get_builtinsize
 run_get_lastSuccessfulBuild_info
 run_cmp_builtinsize
