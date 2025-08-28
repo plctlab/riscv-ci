@@ -103,7 +103,7 @@ def report_builtin_sizes(last):
     print(f"{len(builtin_sizes)} logbtsize-now.txt")
     # TODO(kasperl@rivosinc.com): This is where we should be comparing with the
     # output of the last run.
-    if last is not None: return
+    if last is None: return
     if SECTION_BUILTIN_SIZES in last.sections:
         print(f"Found section in output for build {last.id}:", flush=True)
         for line in last.sections[SECTION_BUILTIN_SIZES]:
