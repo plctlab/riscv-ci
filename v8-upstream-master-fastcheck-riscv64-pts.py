@@ -31,7 +31,7 @@ RISCV64_PTS_RELEASE = variants.Variant("riscv64.pts.release", f"""
   v8_enable_object_print=true
   v8_enable_verify_heap=true
 """, wrapper=[
-  os.path.join(os.path.sep, "opt", "riscv", "bin", "qemu-riscv64"),
+  "qemu-riscv64",
   "-L",
   os.path.join(os.path.sep, "usr", "local", "riscv", "sysroot")
 ])
