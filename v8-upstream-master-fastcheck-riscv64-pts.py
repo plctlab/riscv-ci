@@ -154,9 +154,7 @@ def run_benchmarks(variant, benchmarks):
     for iteration in range(iterations):
         for benchmark in benchmarks:
             name = os.path.basename(benchmark)
-            # TODO(kasperl@rivosinc.com): For now, we avoid starting these lines with
-            # the word 'Running' because the bash version of the script greps for that.
-            print(f"Executing {name} - attempt {iteration + 1}/{iterations}", flush=True)
+            print(f"Running {name} - attempt {iteration + 1}/{iterations}", flush=True)
             v8.run_d8(variant, [benchmark], cwd=os.path.join(v8.ROOT_DIR, "v8"))
             # TODO(kasperl@rivosinc.com): Gather statistics and report them.
 
