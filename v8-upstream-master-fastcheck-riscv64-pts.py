@@ -20,6 +20,7 @@ SECTION_MARKER_BEGIN = SECTION_MARKER + " BEGIN:"
 SECTION_MARKER_END   = SECTION_MARKER + " END:"
 
 SECTION_BUILTIN_SIZES = "builtin sizes"
+SECTION_BENCHMARK     = "benchmark:"
 
 RISCV64_PTS_RELEASE = variants.Variant("riscv64.pts.release", f"""
   is_clang=true
@@ -32,7 +33,7 @@ RISCV64_PTS_RELEASE = variants.Variant("riscv64.pts.release", f"""
   v8_enable_disassembler=true
   v8_enable_object_print=true
   v8_enable_verify_heap=true
-""", wrapper=[
+""", prefix=[
   "qemu-riscv64",
   "-L",
   os.path.join(os.path.sep, "usr", "local", "riscv", "sysroot")
@@ -149,15 +150,27 @@ def find_sunspider_benchmarks():
         root_dir=os.path.join(v8.ROOT_DIR, "v8")))
 
 # Run a list of benchmarks.
-def run_benchmarks(variant, benchmarks):
-    iterations = 3
+def run_benchmarks(variant, suite, benchmarks, iterations=3):
+    prefix = [
+        "-plugin",
+        os.path.join(os.path.sep, "usr", "local", "bin", "plugin", "libinsn.so"),
+        "-d",
+        "plugin",
+    ]
+    sections = dict()
     for iteration in range(iterations):
         for benchmark in benchmarks:
             name = os.path.basename(benchmark)
-            print(f"Running {name} - attempt {iteration + 1}/{iterations}", flush=True)
-            v8.run_d8(variant, [benchmark], cwd=os.path.join(v8.ROOT_DIR, "v8"))
-            # TODO(kasperl@rivosinc.com): Gather statistics and report them.
-
+            output = sections.get(name)
+            if output is None: sections[name] = output = []
+            print(f"Running {suite}:{name} - attempt {iteration + 1}/{iterations}", flush=True)
+            output.extend(v8.run_d8(
+                variant,
+                [benchmark],
+                prefix=prefix,
+                cwd=os.path.join(v8.ROOT_DIR, "v8")))
+    for name, output in sections.items():
+        BuildInformation.print_section(f"{SECTION_BENCHMARK}:{suite}:{name}", output)
 
 v8.fetch_depot_tools()
 v8.fetch()
@@ -168,7 +181,7 @@ last = last_successful_build()
 report_builtin_sizes(last)
 if last is not None: last.print_bash_output()
 sunspider = find_sunspider_benchmarks()
-run_benchmarks(RISCV64_PTS_RELEASE, sunspider)
+run_benchmarks(RISCV64_PTS_RELEASE, "sunspider", sunspider)
 
 # TODO(kasperl@rivosinc.com): Print a marker so we can more easily find the
 # cutoff between the Python and the bash implementations.

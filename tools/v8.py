@@ -131,11 +131,11 @@ def run_tests(variant, fast=False, stress=True):
     if fast: variants = "stress,default" if stress else "default"
     run_tests_specific(variant, tests, f"--variants={variants}")
 
-def run_d8(variant, arguments, cwd=CWD, echo_output=True):
+def run_d8(variant, arguments, prefix=[], cwd=CWD, echo_output=True):
     srcdir = os.path.join(ROOT_DIR, "v8")
     outdir = variant.output_directory()
     return _exec(
-        variant.wrapper + [os.path.join(srcdir, outdir, "d8")] + arguments,
+        variant.prefix + prefix + [os.path.join(srcdir, outdir, "d8")] + arguments,
         cwd=cwd,
         echo_output=echo_output,
         capture_output=True)
