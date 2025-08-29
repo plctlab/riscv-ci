@@ -83,15 +83,6 @@ class BuildInformation:
         for line in lines: print(line)
         print(f"{SECTION_MARKER_END} {name}", flush=True)
 
-    # TODO(kasperl@rivosinc.com): Same output as bash variant for now.
-    def print_bash_output(self):
-        print(f"{len(self.log)} lastSuccessfulBuild.log")
-        BUILD_NUMBER = os.getenv("BUILD_NUMBER", "<unknown>")
-        WORKSPACE = os.getenv("WORKSPACE", "<unknown>")
-        print(f"run_get_lastSuccessfulBuild_info "
-              f"{BUILD_NUMBER} {BUILD_ID} {WORKSPACE} "
-              f"Done")
-
 # Print information about builtin sizes.
 def report_builtin_sizes(last):
     builtin_sizes = v8.run_d8(RISCV64_PTS_RELEASE, [
@@ -149,29 +140,54 @@ def find_sunspider_benchmarks():
         os.path.join("test", "benchmarks", "data", "sunspider", "*.js"),
         root_dir=os.path.join(v8.ROOT_DIR, "v8")))
 
+# Compute the average of a sequence of number in log output.
+def compute_average(prefix, output):
+    sum = 0.0
+    count = 0
+    for line in output:
+        if not line.startswith(prefix): continue
+        sum += float(line[len(prefix):])
+        count += 1
+    return sum / count
+
 # Run a list of benchmarks.
-def run_benchmarks(variant, suite, benchmarks, iterations=3):
+def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
+    srcdir = os.path.join(v8.ROOT_DIR, "v8")
     prefix = [
         "-plugin",
         os.path.join(os.path.sep, "usr", "local", "bin", "plugin", "libinsn.so"),
         "-d",
         "plugin",
     ]
-    sections = dict()
+    results = dict()
     for iteration in range(iterations):
         for benchmark in benchmarks:
             name = os.path.basename(benchmark)
-            output = sections.get(name)
-            if output is None: sections[name] = output = []
+            section = f"{SECTION_BENCHMARK}{suite}:{name}"
+            output = results.get(section)
+            if output is None: results[section] = output = []
             print(f"Running {suite}:{name} - attempt {iteration + 1}/{iterations}", flush=True)
-            output.extend(v8.run_d8(
-                variant,
-                [benchmark],
-                prefix=prefix,
-                cwd=os.path.join(v8.ROOT_DIR, "v8")))
-    for name, output in sections.items():
-        filtered = [line for line in output if line.startswith("total insns:")]
-        BuildInformation.print_section(f"{SECTION_BENCHMARK}{suite}:{name}", filtered)
+            raw = v8.run_d8(variant, [benchmark], prefix=prefix, echo_output=False, cwd=srcdir)
+            output.extend([line for line in raw if line.startswith("total insns:")])
+    for section, output in results.items():
+        BuildInformation.print_section(section, output)
+    if last is None:
+        print(f"No previous build found: Skipping {suite} comparison", flush=True)
+        return
+    for section, output in results.items():
+        # TODO(kasperl@rivosinc.com): For now, we just skip benchmarks where we don't
+        # have previous results. Maybe we should print something for them?
+        if not section in last.sections: continue
+        name = section.split(':')[-1]
+        average_now = compute_average(output)
+        average_last = compute_average(last.sections[section])
+        diff = average_last - average_now
+        ratio = diff / average_last * 100.0
+        print(f"{name:>27s} "
+              f"lsb:{int(average_last):10d} "
+              f"curr:{int(average_now):10d} "
+              f"diff:{int(diff):9d} "
+              f"ratio:{ratio:6.2f}%", flush=True)
 
 v8.fetch_depot_tools()
 v8.fetch()
@@ -180,9 +196,8 @@ v8.build_d8(RISCV64_PTS_RELEASE)
 
 last = last_successful_build()
 report_builtin_sizes(last)
-if last is not None: last.print_bash_output()
 sunspider = find_sunspider_benchmarks()
-run_benchmarks(RISCV64_PTS_RELEASE, "sunspider", sunspider)
+run_benchmarks(RISCV64_PTS_RELEASE, "sunspider", sunspider, last)
 
 # TODO(kasperl@rivosinc.com): Print a marker so we can more easily find the
 # cutoff between the Python and the bash implementations.
