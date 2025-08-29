@@ -174,13 +174,17 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
     if last is None:
         print(f"No previous build found: Skipping {suite} comparison", flush=True)
         return
-    for section, output in results.items():
+    print(f"Comparison of {suite} benchmarks for builds {last.id} (lsb) "
+          f"and {BUILD_ID} (curr):", flush=True)
+    for section in sorted(results.keys()):
+        name = section.split(':')[-1]
         # TODO(kasperl@rivosinc.com): For now, we just skip benchmarks where we don't
         # have previous results. Maybe we should print something for them?
         if not section in last.sections: continue
-        name = section.split(':')[-1]
-        average_now = compute_average("total insns:", output)
-        average_last = compute_average("total insns:", last.sections[section])
+        output_now = results[section]
+        output_last = last.sections[section]
+        average_now = compute_average("total insns:", output_now)
+        average_last = compute_average("total insns:", output_last)
         diff = average_last - average_now
         ratio = diff / average_last * 100.0
         print(f"{name:>27s} "
