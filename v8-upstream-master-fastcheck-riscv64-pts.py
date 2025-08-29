@@ -170,7 +170,8 @@ def run_benchmarks(variant, suite, benchmarks, iterations=3):
                 prefix=prefix,
                 cwd=os.path.join(v8.ROOT_DIR, "v8")))
     for name, output in sections.items():
-        BuildInformation.print_section(f"{SECTION_BENCHMARK}:{suite}:{name}", output)
+        filtered = [line for line in output if line.startswith("total insns:")]
+        BuildInformation.print_section(f"{SECTION_BENCHMARK}{suite}:{name}", filtered)
 
 v8.fetch_depot_tools()
 v8.fetch()
