@@ -62,6 +62,10 @@ run_cmp_builtinsize() {
 
 run_Sunspider() {
   cd "$V8_ROOT/v8/"
+  # Clean the log files before we start appending to them.
+  for i in {1..3}; do
+    rm -f ss-benchmark-${i}.log
+  done
   for i in {1..3}; do
     for file in test/benchmarks/data/sunspider/*.js; do
       echo "Running $(basename "$file")" >> ss-benchmark-${i}.log 2>&1
@@ -69,7 +73,7 @@ run_Sunspider() {
     done
   done
   for i in {1..3}; do
-  grep -E "^(Running|total insn)" ss-benchmark-${i}.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-${i}.log
+    grep -E "^(Running|total insn)" ss-benchmark-${i}.log | awk '{print($NF)}' | paste -d ' ' - - > ss-result-${i}.log
   done
   # This line prints the CI result into the log so that the next CI can use this information for comparison.
   awk '{a[FNR]=$1; b[FNR]+=$2} END{for(i=1;i<=FNR;i++) printf("Benchmarking %s\ntotal insn %d\n", a[i], b[i]/3)}' ss-result-1.log ss-result-2.log ss-result-3.log
@@ -163,7 +167,7 @@ declare -a data=(
     IFS=',' read -r prefix suffix <<< "$item"
     suffix=$(echo "$suffix" | xargs)
     prefix=$(echo "$prefix" | xargs)
-    echo "Running  Group: $prefix Name: $suffix"
+    echo "Running Group: $prefix Name: $suffix"
 
     #qemu-riscv64 -L /usr/local/riscv/sysroot -plugin /usr/local/bin/plugin/libinsn.so -d plugin $D8 ./pts-jetstream.js ./cli.js -- $suffix || exit 7
     #just run without insn plugin
