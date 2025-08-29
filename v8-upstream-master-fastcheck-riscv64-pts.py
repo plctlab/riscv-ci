@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import glob
+import difflib
 import os
 import traceback
 
@@ -12,6 +13,7 @@ import tools.variants as variants
 
 JOB = "v8-upstream-master-fastcheck-riscv64-pts"
 BUILD_VIEW_URL = "https://ci.rvperf.org/view/V8/"
+BUILD_ID = os.getenv("BUILD_ID", "<unknown>")
 
 SECTION_MARKER       = "--++==**@@"
 SECTION_MARKER_BEGIN = SECTION_MARKER + " BEGIN:"
@@ -84,7 +86,6 @@ class BuildInformation:
     def print_bash_output(self):
         print(f"{len(self.log)} lastSuccessfulBuild.log")
         BUILD_NUMBER = os.getenv("BUILD_NUMBER", "<unknown>")
-        BUILD_ID = os.getenv("BUILD_ID", "<unknown>")
         WORKSPACE = os.getenv("WORKSPACE", "<unknown>")
         print(f"run_get_lastSuccessfulBuild_info "
               f"{BUILD_NUMBER} {BUILD_ID} {WORKSPACE} "
@@ -99,17 +100,26 @@ def report_builtin_sizes(last):
         cwd=os.path.join(v8.ROOT_DIR, "v8"),
         echo_output=False)
     BuildInformation.print_section(SECTION_BUILTIN_SIZES, builtin_sizes)
-    # TODO(kasperl@rivosinc.com): Same output as bash variant for now.
-    print(f"{len(builtin_sizes)} logbtsize-now.txt")
-    # TODO(kasperl@rivosinc.com): This is where we should be comparing with the
-    # output of the last run.
-    if last is None: return
-    if SECTION_BUILTIN_SIZES in last.sections:
-        print(f"Found section in output for build {last.id}:", flush=True)
-        for line in last.sections[SECTION_BUILTIN_SIZES]:
-            print(f">>>>> {line}", flush=True)
-    else:
+    if last is None:
+        print("No previous build found: Skipping builtin size comparison", flush=True)
+        return
+    if not SECTION_BUILTIN_SIZES in last.sections:
         print(f"Didn't find section in output for build {last.id}", flush=True)
+        return
+    # Compare the current build's builtin sizes to the last build's builtin
+    # sizes and report any differences.
+    diff = list(difflib.unified_diff(
+        last.sections[SECTION_BUILTIN_SIZES],
+        builtin_sizes,
+        n=0,
+        fromfile=f"Build {last.id}",
+        tofile=f"Build {BUILD_ID}"))
+    if len(diff) == 0:
+        print(f"No differences in builtin sizes from build {last.id} to {BUILD_ID}",
+              flush=True)
+    else:
+        print("Builtin sizes changed:")
+        for line in diff: print(line, flush=True)
 
 # Gather information about last successful build.
 def last_successful_build():
