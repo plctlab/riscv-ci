@@ -179,8 +179,8 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
         # have previous results. Maybe we should print something for them?
         if not section in last.sections: continue
         name = section.split(':')[-1]
-        average_now = compute_average(output)
-        average_last = compute_average(last.sections[section])
+        average_now = compute_average("total insns:", output)
+        average_last = compute_average("total insns:", last.sections[section])
         diff = average_last - average_now
         ratio = diff / average_last * 100.0
         print(f"{name:>27s} "
