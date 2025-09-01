@@ -2,10 +2,12 @@
 git -C riscv-ci pull || git clone https://github.com/plctlab/riscv-ci riscv-ci
 python3 $PWD/riscv-ci/v8-upstream-master-fastcheck-riscv64-pts.py
 
+# Terminate early to avoid getting output that interferes with the summaries.
+exit 0
+
 #############################################################################
 # TODO(kasperl@rivosinc.com): We're keeping the current bash version of the
-# performance tracking system (pts) here, until we've rewritten it completely
-# in Python.
+# JetStream patching and running here until we've rewritten it in Python.
 #############################################################################
 
 # The Python version will make sure we have a properly initialized root
