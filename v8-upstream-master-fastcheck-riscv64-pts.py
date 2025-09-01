@@ -177,7 +177,7 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
         summary.set_status("No previous build found")
         return
     summary.set_status(
-        f"Compared {last.id} (lsb) and {BUILD_ID} (curr)")
+        f"Compared builds {last.id} (lsb) and {BUILD_ID} (curr)")
     for section in sorted(results.keys()):
         name = section.split(':')[-1]
         # TODO(kasperl@rivosinc.com): For now, we just skip benchmarks where we don't
