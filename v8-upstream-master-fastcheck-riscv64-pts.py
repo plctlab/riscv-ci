@@ -169,7 +169,13 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
             output = results.get(section)
             if output is None: results[section] = output = []
             print(f"Running {suite}:{name} - attempt {iteration + 1}/{iterations}", flush=True)
-            raw = v8.run_d8(variant, [benchmark], prefix=prefix, echo_output=False, cwd=srcdir)
+            # We run the benchmarks with the predictable flag to try to better isolate
+            # the per-change improvements or regressions. The flag is rather intrusive,
+            # so it may make the benchmarks less reflecting of real-world performance.
+            raw = v8.run_d8(variant, ["--predictable", benchmark],
+                            prefix=prefix,
+                            echo_output=False,
+                            cwd=srcdir)
             output.extend([line for line in raw if line.startswith("total insns:")])
     for section, output in results.items():
         BuildInformation.print_section(section, output)
