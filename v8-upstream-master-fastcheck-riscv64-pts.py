@@ -8,6 +8,7 @@ import traceback
 from io import TextIOWrapper
 from urllib.request import urlopen
 
+from tools.summary import Summary
 import tools.v8 as v8
 import tools.variants as variants
 
@@ -85,6 +86,7 @@ class BuildInformation:
 
 # Print information about builtin sizes.
 def report_builtin_sizes(last):
+    summary = Summary("Builtin sizes")
     builtin_sizes = v8.run_d8(RISCV64_PTS_RELEASE, [
             "--print-builtin-size",
             os.path.join("test", "benchmarks", "data", "sunspider", "3d-cube.js")
@@ -93,10 +95,10 @@ def report_builtin_sizes(last):
         echo_output=False)
     BuildInformation.print_section(SECTION_BUILTIN_SIZES, builtin_sizes)
     if last is None:
-        print("No previous build found: Skipping builtin size comparison", flush=True)
+        summary.set_status("No previous build found")
         return
     if not SECTION_BUILTIN_SIZES in last.sections:
-        print(f"Didn't find section in output for build {last.id}", flush=True)
+        summary.set_status(f"Didn't find section in output for build {last.id}")
         return
     # Compare the current build's builtin sizes to the last build's builtin
     # sizes and report any differences.
@@ -107,11 +109,10 @@ def report_builtin_sizes(last):
         fromfile=f"Build {last.id}",
         tofile=f"Build {BUILD_ID}"))
     if len(diff) == 0:
-        print(f"No differences in builtin sizes from build {last.id} to {BUILD_ID}",
-              flush=True)
+        summary.set_status(f"No changes from build {last.id} to {BUILD_ID}")
     else:
-        print("Builtin sizes changed:")
-        for line in diff: print(line, flush=True)
+        summary.set_status("Found changes")
+        summary.add_details(diff)
 
 # Gather information about last successful build.
 def last_successful_build():
@@ -140,7 +141,7 @@ def find_sunspider_benchmarks():
         os.path.join("test", "benchmarks", "data", "sunspider", "*.js"),
         root_dir=os.path.join(v8.ROOT_DIR, "v8")))
 
-# Compute the average of a sequence of number in log output.
+# Compute the average of a sequence of numbers in log output.
 def compute_average(prefix, output):
     sum = 0.0
     count = 0
@@ -152,6 +153,7 @@ def compute_average(prefix, output):
 
 # Run a list of benchmarks.
 def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
+    summary = Summary(f"Benchmarks - {suite}")
     srcdir = os.path.join(v8.ROOT_DIR, "v8")
     prefix = [
         "-plugin",
@@ -172,10 +174,10 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
     for section, output in results.items():
         BuildInformation.print_section(section, output)
     if last is None:
-        print(f"No previous build found: Skipping {suite} comparison", flush=True)
+        summary.set_status("No previous build found")
         return
-    print(f"Comparison of {suite} benchmarks for builds {last.id} (lsb) "
-          f"and {BUILD_ID} (curr):", flush=True)
+    summary.set_status(
+        f"Compared {last.id} (lsb) and {BUILD_ID} (curr)")
     for section in sorted(results.keys()):
         name = section.split(':')[-1]
         # TODO(kasperl@rivosinc.com): For now, we just skip benchmarks where we don't
@@ -187,11 +189,12 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
         average_last = compute_average("total insns:", output_last)
         diff = average_last - average_now
         ratio = diff / average_last * 100.0
-        print(f"{name:>27s} "
-              f"lsb:{int(average_last):10d} "
-              f"curr:{int(average_now):10d} "
-              f"diff:{int(diff):9d} "
-              f"ratio:{ratio:6.2f}%", flush=True)
+        summary.add_details(
+            f"{name:>27s} "
+            f"lsb:{int(average_last):10d} "
+            f"curr:{int(average_now):10d} "
+            f"diff:{int(diff):9d} "
+            f"ratio:{ratio:6.2f}%")
 
 v8.fetch_depot_tools()
 v8.fetch()
@@ -203,6 +206,4 @@ report_builtin_sizes(last)
 sunspider = find_sunspider_benchmarks()
 run_benchmarks(RISCV64_PTS_RELEASE, "sunspider", sunspider, last)
 
-# TODO(kasperl@rivosinc.com): Print a marker so we can more easily find the
-# cutoff between the Python and the bash implementations.
-print("======================================================", flush=True)
+Summary.show_all()
