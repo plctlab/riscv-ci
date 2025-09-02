@@ -73,6 +73,9 @@ jetstream = sorted(v8.run_d8(
     ["cli.js", "--", "--dump-test-list"],
     echo_output=False,
     cwd=v8.JETSTREAM_DIR))
+# TODO(kasperl@rivosinc.com): For now, we only run a couple of benchmarks
+# because they are so slow. This is temporary while we test the run scripts.
+jetstream = ["delta-blue", "richards"]
 run_benchmarks(variants.RISCV64_RELEASE_SIM, "jetstream", jetstream, last)
 
 Summary.show_all()
