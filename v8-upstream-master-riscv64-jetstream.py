@@ -56,9 +56,9 @@ def run_benchmarks(variant, suite, benchmarks, last):
         ratio = diff / average_last * 100.0
         summary.add_details(
             f"{name:>27s} "
-            f"lsb:{int(average_last):10d} "
-            f"curr:{int(average_now):10d} "
-            f"diff:{int(diff):9d} "
+            f"lsb:{average_last:7.2f} "
+            f"curr:{average_now:7.2f} "
+            f"diff:{diff:6.2f} "
             f"ratio:{ratio:6.2f}%")
 
 v8.fetch_depot_tools()
