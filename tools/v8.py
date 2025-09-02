@@ -18,6 +18,9 @@ GCLIENT_PATH   = os.path.join(DEPOT_TOOLS_DIR, "gclient")
 GN_PATH        = os.path.join(DEPOT_TOOLS_DIR, "gn")
 AUTONINJA_PATH = os.path.join(DEPOT_TOOLS_DIR, "autoninja")
 
+JETSTREAM_URL  = "https://github.com/WebKit/JetStream.git"
+JETSTREAM_DIR  = os.path.join(CWD, "JetStream")
+
 INSTALL_SYSROOT_PATH = os.path.join(
     "build", "linux", "sysroot_scripts", "install-sysroot.py")
 
@@ -74,6 +77,14 @@ def _exec(arguments, cwd=CWD, check=True, echo_output=True, capture_output=False
 def fetch_depot_tools():
     if os.path.isdir(DEPOT_TOOLS_DIR): return
     _exec(["git", "clone", DEPOT_TOOLS_URL, DEPOT_TOOLS_DIR])
+
+def fetch_jetstream(commit):
+    if not os.path.isdir(JETSTREAM_DIR):
+        _exec(["git", "clone", JETSTREAM_URL, JETSTREAM_DIR])
+    else:
+        _exec(["git", "checkout", "main"], cwd=JETSTREAM_DIR)
+        _exec(["git", "pull"], cwd=JETSTREAM_DIR)
+    _exec(["git", "checkout", commit], cwd=JETSTREAM_DIR)
 
 def fetch(clean=False):
     if clean and os.path.isdir(ROOT_DIR):
