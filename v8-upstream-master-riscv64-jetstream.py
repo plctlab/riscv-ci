@@ -18,11 +18,10 @@ def run_benchmarks(variant, suite, benchmarks, last):
         output = results.get(section)
         if output is None: results[section] = output = []
         print(f"Running {suite}:{benchmark}", flush=True)
-        # We run the benchmarks with the predictable flag to try to better isolate
-        # the per-change improvements or regressions. The flag is rather intrusive,
-        # so it may make the benchmarks less reflecting of real-world performance.
+        # We can't run the benchmarks with the predictable flag, because some of
+        # them simply take too long because they need OSR to get the optimizations
+        # to kick in.
         arguments = [
-            "--predictable",
             "cli.js",
             "--",
             "--iteration-count=4",
