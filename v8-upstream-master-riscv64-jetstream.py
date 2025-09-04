@@ -66,14 +66,14 @@ def run_benchmarks(variant, suite, benchmarks, last):
         result_last = compute_result(output_last)
         if result_last is not None: lsb = f"{result_last:7.2f}"
         # Compute the difference if we've got both current and previous results.
-        diff = ratio = "?" * 9
+        diff = ratio = "?" * 10
         if (result_now is not None) and (result_last is not None):
             delta = result_last - result_now
-            diff = f"{delta:6.2f}"
-            ratio = f"{delta / result_last * 100.0:6.2f}"
+            diff = f"{delta:7.2f}"
+            ratio = f"{delta / result_last * 100.0:7.2f}"
         # Add a single line to the summary with the details.
         summary.add_details(
-            f"{name:>27s} lsb:{lsb} curr:{curr} diff:{diff} ratio:{ratio}%")
+            f"{name:>29s} lsb:{lsb} curr:{curr} diff:{diff} ratio:{ratio}%")
 
 v8.fetch_depot_tools()
 v8.fetch_jetstream(JETSTREAM_COMMIT)
