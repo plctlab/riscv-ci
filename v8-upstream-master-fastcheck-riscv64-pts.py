@@ -106,7 +106,7 @@ def run_benchmarks(variant, suite, benchmarks, last, iterations=3):
         output_last = last.sections[section]
         average_now = compute_average("total insns:", output_now)
         average_last = compute_average("total insns:", output_last)
-        diff = average_last - average_now
+        diff = average_last - average_now  # Lower instruction counts are better.
         ratio = diff / average_last * 100.0
         summary.add_details(
             f"{name:>29s} "
