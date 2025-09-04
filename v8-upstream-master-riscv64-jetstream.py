@@ -68,8 +68,9 @@ def run_benchmarks(variant, suite, benchmarks, last):
         # Compute the difference if we've got both current and previous results.
         diff = ratio = "?" * 9
         if (result_now is not None) and (result_last is not None):
-            diff = f"{result_last - result_now:6.2f}"
-            ratio = f"{diff / result_last * 100.0:6.2f}"
+            delta = result_last - result_now
+            diff = f"{delta:6.2f}"
+            ratio = f"{delta / result_last * 100.0:6.2f}"
         # Add a single line to the summary with the details.
         summary.add_details(
             f"{name:>27s} lsb:{lsb} curr:{curr} diff:{diff} ratio:{ratio}%")
