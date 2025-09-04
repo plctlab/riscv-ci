@@ -81,7 +81,8 @@ def last_successful_build(job):
         print(traceback.format_exc())
         return None
 
-# Compute the average of a sequence of numbers in log output.
+# Compute the average of a sequence of numbers in log output. Returns None
+# if we can't find the prefix in the output.
 def compute_average(prefix, output):
     sum = 0.0
     count = 0
@@ -89,4 +90,5 @@ def compute_average(prefix, output):
         if not line.startswith(prefix): continue
         sum += float(line[len(prefix):])
         count += 1
+    if count == 0: return None
     return sum / count

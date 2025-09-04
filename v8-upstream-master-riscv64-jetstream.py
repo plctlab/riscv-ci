@@ -9,6 +9,16 @@ JOB = "v8-upstream-master-riscv64-jetstream"
 
 JETSTREAM_COMMIT = "f8e3d7e50ed5c7ac071a9d90d3ee36cb68a8678c"
 
+# Helper to compute the result of running a JetStream benchmark. We prefer
+# the "Average:" scores for now, but if we can't find that we'll settle for
+# the "Score:" ones. The average scores disregard the warmup cost, so they
+# reflect the peak performance better.
+def compute_result(output):
+    if output is None: return None
+    average = compute_average("Average:", output)
+    if average is not None: return average
+    return compute_average("Score:", output)
+
 # Run a list of benchmarks.
 def run_benchmarks(variant, suite, benchmarks, last):
     summary = Summary(f"Benchmarks - {suite}")
@@ -42,23 +52,28 @@ def run_benchmarks(variant, suite, benchmarks, last):
         return
     summary.set_status(
         f"Compared builds {last.id} (lsb) and {BUILD_ID} (curr)")
-    for section in sorted(results.keys()):
+    sections = set(results.keys()) | set(last.sections.keys())
+    for section in sorted(sections):
         name = section.split(':')[-1]
-        # TODO(kasperl@rivosinc.com): For now, we just skip benchmarks where we don't
-        # have previous results. Maybe we should print something for them?
-        if not section in last.sections: continue
-        output_now = results[section]
-        output_last = last.sections[section]
-        average_now = compute_average("Average:", output_now)
-        average_last = compute_average("Average:", output_last)
-        diff = average_last - average_now
-        ratio = diff / average_last * 100.0
+        output_now = results.get(section)
+        output_last = last.sections.get(section)
+        # Compute the current and previous results if we can find them
+        # in the logs. Deal with the case where we can't by putting a
+        # recognizable marker in the output.
+        curr = lsb = "?" * 10
+        result_now = compute_result(output_now)
+        if result_now is not None: curr = f"{result_now:7.2f}"
+        result_last = compute_result(output_last)
+        if result_last is not None: lsb = f"{result_last:7.2f}"
+        # Compute the difference if we've got both current and previous results.
+        diff = ratio = "?" * 10
+        if (result_now is not None) and (result_last is not None):
+            delta = result_last - result_now
+            diff = f"{delta:7.2f}"
+            ratio = f"{delta / result_last * 100.0:7.2f}"
+        # Add a single line to the summary with the details.
         summary.add_details(
-            f"{name:>27s} "
-            f"lsb:{average_last:7.2f} "
-            f"curr:{average_now:7.2f} "
-            f"diff:{diff:6.2f} "
-            f"ratio:{ratio:6.2f}%")
+            f"{name:>29s} lsb:{lsb} curr:{curr} diff:{diff} ratio:{ratio}%")
 
 v8.fetch_depot_tools()
 v8.fetch_jetstream(JETSTREAM_COMMIT)
