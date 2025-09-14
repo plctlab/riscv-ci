@@ -28,7 +28,8 @@ ac_add_options --enable-jitspew
 ac_add_options --disable-rust-simd
 ac_add_options --enable-gczeal
 ac_add_options --enable-simulator=riscv64
-ac_add_options --enable-jit" > mozconfig
+ac_add_options --enable-jit
+ac_add_options --enable-wasm-jspi" > mozconfig
 
 export MOZCONFIG=$PWD/mozconfig
 
