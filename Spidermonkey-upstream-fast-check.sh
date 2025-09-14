@@ -13,13 +13,14 @@ rustc --version
 
 rm -rf $HOME/.mozbuild
 
-echo "# Build only the JS shell
+cat << 'EOF' > mozconfig
+# Build only the JS shell
 ac_add_options --enable-application=js
 
 # Enable optimization for speed
-ac_add_options  --enable-optimize
+ac_add_options --enable-optimize
 
-ac_add_options  --disable-debug
+ac_add_options --disable-debug
 # Use a separate objdir for optimized builds to allow easy
 # switching between optimized and debug builds while developing.
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-opt-@CONFIG_GUESS@
@@ -28,7 +29,8 @@ ac_add_options --disable-rust-simd
 ac_add_options --enable-gczeal
 ac_add_options --enable-simulator=riscv64
 ac_add_options --enable-jit
-ac_add_options --enable-wasm-jspi" > mozconfig
+ac_add_options --enable-wasm-jspi
+EOF
 
 export MOZCONFIG=$PWD/mozconfig
 
