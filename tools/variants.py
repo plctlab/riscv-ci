@@ -40,6 +40,17 @@ RISCV64_OPTDEBUG_SIM = Variant("riscv64.optdebug.sim", f"""
   v8_target_cpu="riscv64"
 """)
 
+RISCV64_PTRCOMP_OPTDEBUG_SIM = Variant("riscv64.ptrcomp.optdebug.sim", f"""
+  is_component_build=false
+  is_debug=true
+  target_cpu="{TARGET_CPU}"
+  v8_enable_backtrace=true
+  v8_enable_slow_dchecks=true
+  v8_optimized_debug=true
+  v8_target_cpu="riscv64"
+  v8_enable_pointer_compression=true
+""")
+
 RISCV32_RELEASE_SIM = Variant("riscv32.release.sim", f"""
   is_component_build=false
   is_debug=false
