@@ -30,7 +30,7 @@ RISCV32_OPTDEBUG_SIM = Variant("riscv32.optdebug.sim", f"""
   v8_target_cpu="riscv32"
 """)
 
-RISCV64_OPTDEBUG_SIM = Variant("riscv64.optdebug.sim", f"""
+RISCV64_OPTDEBUG_VLEN128_SIM = Variant("riscv64.vlen128.optdebug.sim", f"""
   is_component_build=false
   is_debug=true
   target_cpu="{TARGET_CPU}"
@@ -38,6 +38,17 @@ RISCV64_OPTDEBUG_SIM = Variant("riscv64.optdebug.sim", f"""
   v8_enable_slow_dchecks=true
   v8_optimized_debug=true
   v8_target_cpu="riscv64"
+""")
+
+RISCV64_OPTDEBUG_VLEN256_SIM = Variant("riscv64.vlen256.optdebug.sim", f"""
+  is_component_build=false
+  is_debug=true
+  target_cpu="{TARGET_CPU}"
+  v8_enable_backtrace=true
+  v8_enable_slow_dchecks=true
+  v8_optimized_debug=true
+  v8_target_cpu="riscv64"
+  riscv_rvv_vlen=256
 """)
 
 RISCV64_PTRCOMP_OPTDEBUG_SIM = Variant("riscv64.ptrcomp.optdebug.sim", f"""
@@ -58,14 +69,14 @@ RISCV32_RELEASE_SIM = Variant("riscv32.release.sim", f"""
   v8_target_cpu="riscv32"
 """)
 
-RISCV64_RELEASE_SIM_VLEN128 = Variant("riscv64.release.vlen128.sim", f"""
+RISCV64_RELEASE_VLEN128_SIM = Variant("riscv64.release.vlen128.sim", f"""
   is_component_build=false
   is_debug=false
   target_cpu="{TARGET_CPU}"
   v8_target_cpu="riscv64"
 """)
 
-RISCV64_RELEASE_SIM_VLEN256 = Variant("riscv64.release.vlen256.sim", f"""
+RISCV64_RELEASE_VLEN256_SIM = Variant("riscv64.release.vlen256.sim", f"""
   is_component_build=false
   is_debug=false
   target_cpu="{TARGET_CPU}"
