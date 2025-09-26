@@ -58,12 +58,21 @@ RISCV32_RELEASE_SIM = Variant("riscv32.release.sim", f"""
   v8_target_cpu="riscv32"
 """)
 
-RISCV64_RELEASE_SIM = Variant("riscv64.release.sim", f"""
+RISCV64_RELEASE_SIM_VLEN128 = Variant("riscv64.release.vlen128.sim", f"""
   is_component_build=false
   is_debug=false
   target_cpu="{TARGET_CPU}"
   v8_target_cpu="riscv64"
 """)
+
+RISCV64_RELEASE_SIM_VLEN256 = Variant("riscv64.release.vlen256.sim", f"""
+  is_component_build=false
+  is_debug=false
+  target_cpu="{TARGET_CPU}"
+  v8_target_cpu="riscv64"
+  riscv_rvv_vlen=256
+""")
+
 
 RISCV64_PTRCOMP_RELEASE_SIM = Variant("riscv64.ptrcomp.release.sim", f"""
   is_component_build=false

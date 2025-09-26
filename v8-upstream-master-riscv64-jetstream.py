@@ -78,15 +78,15 @@ def run_benchmarks(variant, suite, benchmarks, last):
 v8.fetch_depot_tools()
 v8.fetch_jetstream(JETSTREAM_COMMIT)
 v8.fetch()
-v8.build_d8(variants.RISCV64_RELEASE_SIM)
+v8.build_d8(variants.RISCV64_RELEASE_SIM_VLEN128)
 
 last = last_successful_build(JOB)
 
 jetstream = sorted(v8.run_d8(
-    variants.RISCV64_RELEASE_SIM,
+    variants.RISCV64_RELEASE_SIM_VLEN128,
     ["cli.js", "--", "--dump-test-list"],
     echo_output=False,
     cwd=v8.JETSTREAM_DIR))
-run_benchmarks(variants.RISCV64_RELEASE_SIM, "jetstream", jetstream, last)
+run_benchmarks(variants.RISCV64_RELEASE_SIM_VLEN128, "jetstream", jetstream, last)
 
 Summary.show_all()

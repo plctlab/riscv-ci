@@ -9,5 +9,5 @@ v8.fetch()
 v8.build(variants.RISCV64_OPTDEBUG_SIM)
 v8.build(variants.RISCV64_RELEASE_SIM_VLEN128)
 
-v8.run_tests(variants.RISCV64_OPTDEBUG_SIM, fast=True)
-v8.run_tests(variants.RISCV64_RELEASE_SIM_VLEN128, fast=True)
+v8.run_tests(variants.RISCV64_OPTDEBUG_SIM)
+v8.run_tests(variants.RISCV64_RELEASE_SIM_VLEN128)
