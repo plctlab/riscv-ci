@@ -62,6 +62,21 @@ RISCV64_PTRCOMP_OPTDEBUG_SIM = Variant("riscv64.ptrcomp.optdebug.sim", f"""
   v8_enable_pointer_compression=true
 """)
 
+RISCV64_SANDBOX_OPTDEBUG_SIM = Variant("riscv64.sandbox.optdebug.sim", f"""
+  is_component_build=false
+  is_debug=true
+  target_cpu="{TARGET_CPU}"
+  v8_enable_backtrace=true
+  v8_enable_slow_dchecks=true
+  v8_optimized_debug=true
+  v8_target_cpu="riscv64"
+  v8_enable_pointer_compression=true
+  v8_enable_external_code_space = true 
+  v8_enable_sandbox = true 
+  v8_enable_short_builtin_calls = true 
+  v8_enable_static_roots = true
+""")
+
 RISCV32_RELEASE_SIM = Variant("riscv32.release.sim", f"""
   is_component_build=false
   is_debug=false
@@ -91,4 +106,16 @@ RISCV64_PTRCOMP_RELEASE_SIM = Variant("riscv64.ptrcomp.release.sim", f"""
   target_cpu="{TARGET_CPU}"
   v8_target_cpu="riscv64"
   v8_enable_pointer_compression=true
+""")
+
+RISCV64_SANDBOX_RELEASE_SIM = Variant("riscv64.sandbox.release.sim", f"""
+  is_component_build=false
+  is_debug=false
+  target_cpu="{TARGET_CPU}"
+  v8_target_cpu="riscv64"
+  v8_enable_pointer_compression=true
+  v8_enable_external_code_space = true 
+  v8_enable_sandbox = true 
+  v8_enable_short_builtin_calls = true 
+  v8_enable_static_roots = true
 """)
