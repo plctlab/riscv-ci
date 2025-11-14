@@ -95,7 +95,7 @@ def fetch(clean=False):
     if os.path.isdir(srcdir):
         # We already have a checked out version of v8, so we assume it is already
         # on the main branch and just pull there.
-        _exec(["git", "pull"], cwd=srcdir)
+        _exec(["git", "pull", "origin", "main"], cwd=srcdir)
     else:
         # We do not have a checkout of v8 yet, so we use 'fetch' to get the initial
         # version of it and make sure to change to the main branch.
