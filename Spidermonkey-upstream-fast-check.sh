@@ -45,5 +45,5 @@ git log HEAD~1..HEAD
 ./mach build
 
 ./mach jsapi-tests
-./mach jstests -t 400 --format automation
+./mach jstests -- -t 400 --format automation --no-progress
 ./mach jit-test -- --ion -t 400 --format automation --no-progress

@@ -52,10 +52,10 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 
 ./mach build
 
-./mach jstests -t 400 --format automation
+./mach jstests -- -t 400 --format automation --no-progress
 
-./mach jit-test -- -t 400 --format automation
+./mach jit-test -- -t 400 --format automation --no-progress
 ./mach jit-test -- --ion -t 400 --format automation --no-progress
-RISCV_EXT_ZBA=1 RISCV_EXT_ZBB=1 ./mach jit-test -- -t 400 --format automation
+RISCV_EXT_ZBA=1 RISCV_EXT_ZBB=1 ./mach jit-test -- -t 400 --format automation --no-progress
 RISCV_EXT_ZBA=1 RISCV_EXT_ZBB=1 ./mach jit-test -- --ion -t 400 --format automation --no-progress
 ./mach jsapi-tests
