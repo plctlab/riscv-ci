@@ -55,5 +55,5 @@ rm -rf ./obj-opt-x86_64-pc-linux-gnu
 ./mach jstests -t 400 --format automation
 
 ./mach jit-test -- -t 400 --format automation
-./mach jit-test -- --ion -t 800 --format automation --no-progress
+./mach jit-test -- --ion -t 400 --format automation --no-progress
 ./mach jsapi-tests
