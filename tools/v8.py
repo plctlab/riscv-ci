@@ -93,7 +93,7 @@ def fetch(clean=False):
     if not os.path.isdir(ROOT_DIR):
         os.mkdir(ROOT_DIR)
     srcdir = os.path.join(ROOT_DIR, "v8")
-    _exec([BOOTSTRAP_PATH], cwd=srcdir)
+    _exec([BOOTSTRAP_PATH], cwd=ROOT_DIR)
     if os.path.isdir(srcdir):
         # We already have a checked out version of v8, so we assume it is already
         # on the main branch and just pull there.
