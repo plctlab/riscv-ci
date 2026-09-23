@@ -17,6 +17,7 @@ FETCH_PATH     = os.path.join(DEPOT_TOOLS_DIR, "fetch")
 GCLIENT_PATH   = os.path.join(DEPOT_TOOLS_DIR, "gclient")
 GN_PATH        = os.path.join(DEPOT_TOOLS_DIR, "gn")
 AUTONINJA_PATH = os.path.join(DEPOT_TOOLS_DIR, "autoninja")
+BOOTSTRAP_PATH = os.path.join(DEPOT_TOOLS_DIR, "ensure_bootstrap")
 
 JETSTREAM_URL  = "https://github.com/WebKit/JetStream.git"
 JETSTREAM_DIR  = os.path.join(CWD, "JetStream")
@@ -101,6 +102,7 @@ def fetch(clean=False):
         # version of it and make sure to change to the main branch.
         _exec([FETCH_PATH, "v8"], cwd=ROOT_DIR)
         _exec(["git", "checkout", "main"], cwd=srcdir)
+    _exec([BOOTSTRAP_PATH], cwd=srcdir)
     _exec([GCLIENT_PATH, "sync"], cwd=srcdir)
 
 def fetch_sysroot(architecture):
