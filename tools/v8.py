@@ -93,6 +93,7 @@ def fetch(clean=False):
     if not os.path.isdir(ROOT_DIR):
         os.mkdir(ROOT_DIR)
     srcdir = os.path.join(ROOT_DIR, "v8")
+    _exec([BOOTSTRAP_PATH], cwd=srcdir)
     if os.path.isdir(srcdir):
         # We already have a checked out version of v8, so we assume it is already
         # on the main branch and just pull there.
@@ -102,7 +103,6 @@ def fetch(clean=False):
         # version of it and make sure to change to the main branch.
         _exec([FETCH_PATH, "v8"], cwd=ROOT_DIR)
         _exec(["git", "checkout", "main"], cwd=srcdir)
-    _exec([BOOTSTRAP_PATH], cwd=srcdir)
     _exec([GCLIENT_PATH, "sync"], cwd=srcdir)
 
 def fetch_sysroot(architecture):
